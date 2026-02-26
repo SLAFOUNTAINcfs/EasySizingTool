@@ -5,794 +5,401 @@
   <title>EaST</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="styles/migrationtool.css" />
+  <link rel="stylesheet" href="styles/pricing.css" />
 </head>
 <body>
-<div class="container">
-    <div class="container">
-      <h1>Easy Sizing Tool</h1>
-      <div class="export-import-controls">
-        <button id="exportBtn" type="button">Export Progress</button>
-        <label for="importInput" class="visually-hidden">Import Progress File</label>
-        <input id="importInput" type="file" accept="application/json" title="Import Progress File (JSON)" />
-        <button id="importBtn" type="button">Import Progress</button>
-      </div>
-      <p class="muted">Fill out the application information, select quantified ranges, and check all complexity factors that apply. Click "Recalculate" to see the estimated effort and size bucket for this migration.</p>
+  <div class="container">
+    <h1>Easy Sizing Tool</h1>
+    <div class="export-import-controls">
+      <button id="exportBtn" type="button">Export Progress</button>
+      <label for="importInput" class="visually-hidden">Import Progress File</label>
+      <input id="importInput" type="file" accept="application/json" title="Import Progress File (JSON)" />
+      <button id="importBtn" type="button">Import Progress</button>
+    </div>
+    <p class="muted">Fill out the application information and migration drivers, then click "Recalculate" to estimate effort and compare Standard, Recommended, and Express options.</p>
 
-      <!-- 1. Application Information -->
-      <div class="card">
-        <h2>1. Application Information</h2>
-        <div class="grid">
-          <div><label for="appName">Application Name</label><input id="appName" type="text" /></div>
-          <div><label for="cloudStrategyDM">Cloud Strategy Decision Maker</label><input id="cloudStrategyDM" type="text" /></div>
-          <div><label for="cloudImplDM">Cloud Implementation Decision Maker</label><input id="cloudImplDM" type="text" /></div>
-          <div><label for="appOwner">Application Owner(s)</label><input id="appOwner" type="text" /></div>
-          <div><label for="ownerAvailability">Owner Availability Next 4 Weeks</label><select id="ownerAvailability"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="targetCloud">Target Cloud Environment</label><select id="targetCloud"><option value="">–</option><option>Commercial</option><option>GCC</option><option>GCC High</option><option>IL5</option><option>IL6</option></select></div>
-          <div><label for="azureSub">Azure Subscription Established</label><select id="azureSub"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="rolePerms">Required Role Permissions Available (Owner/Contributor)</label><select id="rolePerms"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="azureExp">Azure Experience Level</label><select id="azureExp"><option value="">–</option><option>New</option><option>Moderate</option><option>Advanced</option></select></div>
-          <div><label for="archDiagram">Architecture Diagram Available</label><select id="archDiagram"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="dbDiagram">Database Diagram Available</label><select id="dbDiagram"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="atoDocs">ATO Documentation Available</label><select id="atoDocs"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="azureCAP">Azure CAP Created</label><select id="azureCAP"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="azureEnclave">Azure Enclave Accredited</label><select id="azureEnclave"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div class="full-width"><label for="notes">Notes</label><textarea id="notes"></textarea></div>
+    <div class="card">
+      <h2>1. Application Information</h2>
+      <div class="grid options-grid">
+        <div><label for="appName">Application Name</label><input id="appName" type="text" /></div>
+        <div><label for="cloudStrategyDM">Cloud Strategy Decision Maker</label><input id="cloudStrategyDM" type="text" /></div>
+        <div><label for="cloudImplDM">Cloud Implementation Decision Maker</label><input id="cloudImplDM" type="text" /></div>
+        <div><label for="appOwner">Application Owner(s)</label><input id="appOwner" type="text" /></div>
+        <div>
+          <label for="ownerAvailability">Owner Availability Next 4 Weeks</label>
+          <select id="ownerAvailability">
+            <option value="">–</option><option>Yes</option><option>No</option><option>Partial</option>
+          </select>
+        </div>
+        <div><label for="azureSub">Azure Subscription Established</label><select id="azureSub"><option value="">–</option><option>Yes</option><option>No</option></select></div>
+        <div>
+          <label for="rolePerms">Required Role Permissions Available</label>
+          <select id="rolePerms">
+            <option value="">–</option><option>Owner</option><option>Contributor</option><option>Reader</option><option>Yes</option><option>No</option>
+          </select>
+        </div>
+        <div><label for="azureExp">Azure Experience Level</label><select id="azureExp"><option value="">–</option><option>New</option><option>Moderate</option><option>Advanced</option></select></div>
+        <div><label for="archDiagram">Architecture Diagram Available</label><select id="archDiagram"><option value="">–</option><option>Yes</option><option>No</option></select></div>
+        <div><label for="dbDiagram">Database Diagram Available</label><select id="dbDiagram"><option value="">–</option><option>Yes</option><option>No</option></select></div>
+        <div class="full-width"><label for="notes">Notes</label><textarea id="notes"></textarea></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Security &amp; Environment Context</h2>
+      <div class="grid options-grid security-layout">
+        <fieldset class="security-left">
+          <legend>Enclaves the app exists in (current state)</legend>
+          <label><input id="enclaveIL2" type="checkbox" /> IL2</label>
+          <label><input id="enclaveIL4" type="checkbox" /> IL4</label>
+          <label><input id="enclaveIL5" type="checkbox" /> IL5</label>
+          <label><input id="enclaveIL6" type="checkbox" /> IL6</label>
+          <label><input id="enclaveOther" type="checkbox" /> Other</label>
+        </fieldset>
+        <div class="security-right">
+          <div>
+            <label for="impactLevelRequired">Impact Level Required (target state)</label>
+            <select id="impactLevelRequired">
+              <option value="1">IL2</option>
+              <option value="2">IL4</option>
+              <option value="3">IL5</option>
+              <option value="4">IL6</option>
+              <option value="2">Other</option>
+            </select>
+          </div>
+          <div><label for="secCap">CAP</label><select id="secCap"><option value="0">N/A</option><option value="3">Yes</option><option value="0">No</option></select></div>
+          <div><label for="atoNeeded">ATO Needed</label><select id="atoNeeded"><option value="0">No</option><option value="4">Yes</option></select></div>
+          <div><label for="atoDocs">ATO Documentation Available</label><select id="atoDocs"><option value="0">Yes</option><option value="4">No</option></select></div>
+          <div>
+            <label for="azureEnclaveStatus">Azure Enclave Accredited</label>
+            <select id="azureEnclaveStatus">
+              <option value="0">N/A</option>
+              <option value="0">Yes</option>
+              <option value="5">No</option>
+              <option value="3">In progress</option>
+            </select>
+          </div>
         </div>
       </div>
-
-      <!-- 2. Quantified Inputs -->
-      <div class="card">
-        <h2>2. Quantified Inputs</h2>
-        <div class="grid">
-          <div><label for="q_enclaves">Enclaves</label><select id="q_enclaves" multiple><option>IL2</option><option>IL4</option><option>IL5</option><option>IL6</option><option>Other</option></select></div>
-          <div><label for="q_cap">CAP (Azure Cloud Access Point)</label><select id="q_cap"><option value="">–</option><option>Yes</option><option>No</option><option>N/A</option></select></div>
-          <div><label for="q_users">Total Users</label><select id="q_users"><option value="1">Less than 10</option><option value="2">11 to 20</option><option value="3">21 to 50</option><option value="4">50 to 100</option><option value="5">Over 100</option></select></div>
-          <div><label for="q_rto">RTO Requirements</label><select id="q_rto"><option value="1">Mission Critical (minutes)</option><option value="2">Business Critical (hours)</option><option value="3">Low Critical (days)</option></select></div>
-          <div><label for="q_impact">Impact Levels</label><select id="q_impact" multiple><option>IL2</option><option>IL4</option><option>IL5</option><option>IL6</option><option>Other</option></select></div>
-          <div><label for="q_dataSensitivity">Data Sensitivity</label><select id="q_dataSensitivity"><option value="1">Confidential</option><option value="2">Secret</option><option value="3">Top Secret</option><option value="4">SCI / SAP</option></select></div>
-          <div><label for="q_rmf">RMF Categorization</label><select id="q_rmf"><option value="1">High</option><option value="2">Medium</option><option value="3">Low</option></select></div>
-          <div><label for="q_ato">ATO Needed</label><select id="q_ato"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_certCycle">Certification Cycle</label><select id="q_certCycle"><option value="1">6 Months</option><option value="2">1 Year</option><option value="3">2 Year</option><option value="4">Other</option></select></div>
-          <div><label for="q_opsCost">Operations Costs</label><select id="q_opsCost"><option value="1">Less than $1,000</option><option value="2">$1,000 to $1,999</option><option value="3">$2,000 to $4,999</option><option value="4">$5,000 to $9,999</option><option value="5">$10,000 to $19,999</option><option value="6">$20,000 to $50,000</option><option value="7">Greater than $50,000</option></select></div>
-          <div><label for="q_docStatus">Documentation Up-to-date?</label><select id="q_docStatus"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_archDiagram">Architecture Diagram Available?</label><select id="q_archDiagram"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_hwSpecs">Hardware Specs (DBs)</label><input id="q_hwSpecs" type="text" placeholder="Describe hardware specs" /></div>
-          <div><label for="q_containerized">Containerized?</label><select id="q_containerized"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_onPrem">On Prem?</label><select id="q_onPrem"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_hybrid">Hybrid?</label><select id="q_hybrid"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_dbConfig">Database Configuration</label><select id="q_dbConfig"><option value="1">Single Database</option><option value="2">Multiple Databases</option><option value="3">Other</option></select></div>
-          <div><label for="q_dataVolume">Data Volume</label><select id="q_dataVolume"><option value="1">10 GB</option><option value="2">10 to 100 GB</option><option value="3">100 GB to 1 TB</option><option value="4">1 TB+</option><option value="5">I don't know</option></select></div>
-          <div><label for="q_loc">Total Lines of Code</label><select id="q_loc"><option value="1">Small (less than 1000 lines)</option><option value="2">Medium (1000 to 5000 lines)</option><option value="3">Large (Over 5000 lines)</option></select></div>
-          <div><label for="q_autoTest">Automated Testing?</label><select id="q_autoTest"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_manualTest">Manual Testing?</label><select id="q_manualTest"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_deployInfra">Deployment Infrastructure?</label><select id="q_deployInfra"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_iac">IAC?</label><select id="q_iac"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_logging">Logging Required?</label><select id="q_logging"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_maintCadence">Maintenance Cadence</label><input id="q_maintCadence" type="text" placeholder="Describe cadence" /></div>
-          <div><label for="q_identity">Identity Management in Cloud?</label><select id="q_identity"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_featureTrack">Feature Issue Tracking?</label><select id="q_featureTrack"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_backupDR">Backup/DR Strategies?</label><select id="q_backupDR"><option value="">–</option><option>Yes</option><option>No</option></select></div>
-          <div><label for="q_storageType">Data Storage Type</label><select id="q_storageType"><option value="1">Hot</option><option value="2">Warm</option><option value="3">Cold</option></select></div>
-          <div><label for="q_instancesDev">Dev Instances</label><select id="q_instancesDev"><option value="1">0</option><option value="2">1</option><option value="3">2</option><option value="4">3</option><option value="5">4+</option></select></div>
-          <div><label for="q_instancesTest">Test Instances</label><select id="q_instancesTest"><option value="1">0</option><option value="2">1</option><option value="3">2</option><option value="4">3</option><option value="5">4+</option></select></div>
-          <div><label for="q_instancesStaging">Staging Instances</label><select id="q_instancesStaging"><option value="1">0</option><option value="2">1</option><option value="3">2</option><option value="4">3</option><option value="5">4+</option></select></div>
-          <div><label for="q_instancesProd">Prod Instances</label><select id="q_instancesProd"><option value="1">0</option><option value="2">1</option><option value="3">2</option><option value="4">3</option><option value="5">4+</option></select></div>
-          <div><label for="q_instancesRel">Rel Instances</label><select id="q_instancesRel"><option value="1">0</option><option value="2">1</option><option value="3">2</option><option value="4">3</option><option value="5">4+</option></select></div>
-        </div>
-      </div>
-
-      <!-- 3. Migration Complexity Factors -->
-      <div class="card">
-        <h2>3. Migration Complexity Factors</h2>
-        <div class="scroll-x">
-          <script type="module">
-            import { exportProgress, importProgressFromFile } from './modules/exportImport.js';
-            import { factorCount, calculate, hookInputs, resetDefaults } from './modules/calculation.js';
-
-            const defaultWeights = Array(factorCount).fill(5);
-            const defaultModel = {
-              basePersonDays: 10,
-              dailyRate: 200,
-              workDaysPerMonth: 20,
-              hoursPerDay: 6,
-              sprintHours: 60,
-              teamMembers: 6,
-              xsThreshold: 75,
-              sThreshold: 116,
-              mThreshold: 231,
-              lThreshold: 376,
-              xlThreshold: 461,
-              xxlThreshold: 576
-            };
-
-            document.addEventListener('DOMContentLoaded', function() {
-              document.getElementById('exportBtn').addEventListener('click', () => exportProgress(factorCount));
-              document.getElementById('importBtn').addEventListener('click', function() {
-                document.getElementById('importInput').click();
-              });
-              document.getElementById('importInput').addEventListener('change', function(e) {
-                if (e.target.files && e.target.files[0]) {
-                  importProgressFromFile(e.target.files[0], factorCount);
-                }
-              });
-              hookInputs();
-              document.getElementById('recalcBtn').addEventListener('click', calculate);
-              document.getElementById('resetBtn').addEventListener('click', () => resetDefaults(defaultWeights, defaultModel));
-              resetDefaults(defaultWeights, defaultModel);
-            });
-          </script>
-          </tr>
-          <tr>
-            <td>F40</td>
-            <td>Prod Environment</td>
-            <td class="desc">Production environment requirements.</td>
-            <td><label for="weight-40" class="visually-hidden">Weight for Prod Environment</label><input id="weight-40" type="number" min="1" max="10" step="1" value="5" /></td>
-            <td class="centered-cell"><label for="required-40" class="visually-hidden">Required for Prod Environment</label><input id="required-40" type="checkbox" /></td>
-          </tr>
-          <tr>
-            <td>F41</td>
-            <td>Rel Environment</td>
-            <td class="desc">Release environment requirements.</td>
-            <td><label for="weight-41" class="visually-hidden">Weight for Rel Environment</label><input id="weight-41" type="number" min="1" max="10" step="1" value="5" /></td>
-            <td class="centered-cell"><label for="required-41" class="visually-hidden">Required for Rel Environment</label><input id="required-41" type="checkbox" /></td>
-          </tr>
-
-          <!-- Application Size & Data Volume Group -->
-          <tr><td colspan="5" class="section-header">Application Size & Data Volume</td></tr>
-          <tr>
-            <td>F42</td>
-            <td>Application Size</td>
-            <td class="desc">Codebase size, modules, custom logic, legacy tech.</td>
-            <td><label for="weight-42" class="visually-hidden">Weight for Application Size</label><input id="weight-42" type="number" min="1" max="10" step="1" value="5" /></td>
-            <td class="centered-cell"><label for="required-42" class="visually-hidden">Required for Application Size</label><input id="required-42" type="checkbox" /></td>
-          </tr>
-          <tr>
-            <td>F43</td>
-            <td>Data Volume</td>
-            <td class="desc">Total data size to migrate (DB + files).</td>
-            <td><label for="weight-43" class="visually-hidden">Weight for Data Volume</label><input id="weight-43" type="number" min="1" max="10" step="1" value="5" /></td>
-            <td class="centered-cell"><label for="required-43" class="visually-hidden">Required for Data Volume</label><input id="required-43" type="checkbox" /></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
-    <div class="mt-075 flex-row">
-      <button class="btn" type="button" id="recalcBtn">Recalculate</button>
-      <button class="btn btn-reset" type="button" id="resetBtn">
-        Reset Weights &amp; Model
-      </button>
+
+    <div class="card">
+      <h2>3. Quantified Scale Inputs</h2>
+      <div class="grid options-grid">
+        <div><label for="q_users">Total Users</label><select id="q_users"><option value="1">Less than 10</option><option value="2">11 to 20</option><option value="3">21 to 50</option><option value="4">50 to 100</option><option value="5">Over 100</option></select></div>
+        <div><label for="q_rto">RTO Requirements</label><select id="q_rto"><option value="1">Mission Critical (minutes)</option><option value="2">Business Critical (hours)</option><option value="3">Low Critical (days)</option></select></div>
+        <div><label for="q_opsCost">Operations Costs</label><select id="q_opsCost"><option value="1">Less than $1,000</option><option value="2">$1,000 to $1,999</option><option value="3">$2,000 to $4,999</option><option value="4">$5,000 to $9,999</option><option value="5">$10,000 to $19,999</option><option value="6">$20,000 to $50,000</option><option value="7">Greater than $50,000</option></select></div>
+        <div><label for="q_dataVolume">Data Volume</label><select id="q_dataVolume"><option value="1">10 GB</option><option value="2">10 to 100 GB</option><option value="3">100 GB to 1 TB</option><option value="4">1 TB+</option><option value="2">I don't know</option></select></div>
+        <div><label for="q_loc">Total Lines of Code</label><select id="q_loc"><option value="1">Small (less than 1000 lines)</option><option value="2">Medium (1000 to 5000 lines)</option><option value="3">Large (Over 5000 lines)</option></select></div>
+        <div><label for="q_dbConfig">Database Configuration</label><select id="q_dbConfig"><option value="1">Single Database</option><option value="2">Multiple Databases</option><option value="2">Other</option></select></div>
+        <div><label for="q_storageType">Data Storage Type</label><select id="q_storageType"><option value="1">Hot</option><option value="2">Warm</option><option value="3">Cold</option></select></div>
+        <div><label for="q_instancesDev">Dev Instances</label><select id="q_instancesDev"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select></div>
+        <div><label for="q_instancesTest">Test Instances</label><select id="q_instancesTest"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select></div>
+        <div><label for="q_instancesStaging">Staging Instances</label><select id="q_instancesStaging"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select></div>
+        <div><label for="q_instancesProd">Prod Instances</label><select id="q_instancesProd"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select></div>
+        <div><label for="q_instancesRel">Rel Instances</label><select id="q_instancesRel"><option value="0">0</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>4. Complexity Factors (Boolean Effort Drivers)</h2>
+      <div class="grid options-grid option-grid">
+        <label class="option-item"><input id="c_onPremDependency" type="checkbox" /> On-prem dependency</label>
+        <label class="option-item"><input id="c_hybridDependency" type="checkbox" /> Hybrid dependency</label>
+        <label class="option-item"><input id="c_containerizationRequired" type="checkbox" /> Containerization required</label>
+        <label class="option-item"><input id="c_automatedTestingMissing" type="checkbox" /> Automated testing missing / needs building</label>
+        <label class="option-item"><input id="c_manualTestingExtended" type="checkbox" /> Manual testing required beyond normal</label>
+        <label class="option-item"><input id="c_deploymentInfraMissing" type="checkbox" /> Deployment infra missing / needs building</label>
+        <label class="option-item"><input id="c_iacMissing" type="checkbox" /> IaC missing / needs building</label>
+        <label class="option-item"><input id="c_loggingUplift" type="checkbox" /> Logging/observability uplift required</label>
+        <label class="option-item"><input id="c_backupDrMissing" type="checkbox" /> Backup/DR missing / needs building</label>
+        <label class="option-item"><input id="c_identityIntegrationRequired" type="checkbox" /> Identity management integration required</label>
+        <label class="option-item"><input id="c_featureTrackingMissing" type="checkbox" /> Feature/issue tracking missing</label>
+      </div>
+      <div class="mt-075 flex-row">
+        <button class="btn" type="button" id="recalcBtn">Recalculate</button>
+        <button class="btn btn-reset" type="button" id="resetBtn">Reset Weights &amp; Model</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>5. Scoring Weights</h2>
+      <p class="desc">Adjust complexity factor weights without editing code.</p>
+      <div class="grid options-grid">
+        <div><label for="w_c_onPremDependency">On-prem dependency weight</label><input id="w_c_onPremDependency" type="number" step="1" value="8" /></div>
+        <div><label for="w_c_hybridDependency">Hybrid dependency weight</label><input id="w_c_hybridDependency" type="number" step="1" value="6" /></div>
+        <div><label for="w_c_containerizationRequired">Containerization required weight</label><input id="w_c_containerizationRequired" type="number" step="1" value="7" /></div>
+        <div><label for="w_c_automatedTestingMissing">Automated testing missing weight</label><input id="w_c_automatedTestingMissing" type="number" step="1" value="5" /></div>
+        <div><label for="w_c_manualTestingExtended">Manual testing extended weight</label><input id="w_c_manualTestingExtended" type="number" step="1" value="4" /></div>
+        <div><label for="w_c_deploymentInfraMissing">Deployment infra missing weight</label><input id="w_c_deploymentInfraMissing" type="number" step="1" value="6" /></div>
+        <div><label for="w_c_iacMissing">IaC missing weight</label><input id="w_c_iacMissing" type="number" step="1" value="6" /></div>
+        <div><label for="w_c_loggingUplift">Logging uplift weight</label><input id="w_c_loggingUplift" type="number" step="1" value="5" /></div>
+        <div><label for="w_c_backupDrMissing">Backup/DR missing weight</label><input id="w_c_backupDrMissing" type="number" step="1" value="6" /></div>
+        <div><label for="w_c_identityIntegrationRequired">Identity integration weight</label><input id="w_c_identityIntegrationRequired" type="number" step="1" value="6" /></div>
+        <div><label for="w_c_featureTrackingMissing">Feature tracking missing weight</label><input id="w_c_featureTrackingMissing" type="number" step="1" value="2" /></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>6. Service Packages</h2>
+      <p class="desc">Same scope score, different staffing caps and pricing multipliers.</p>
+      <div class="pricing-grid" role="list" aria-label="Service packages">
+        <section class="pricing-card" role="listitem" aria-labelledby="pkg-standard-title"><header class="pricing-header"><h3 id="pkg-standard-title">Standard</h3><div class="pricing-sub">Up to <strong>3</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-standard-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-standard-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-standard-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-standard-hours">0</dd></div><div class="pricing-kv-row"><dt>Person-sprints</dt><dd id="pkg-standard-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-standard-sprintCapacityHours">0</dd></div></dl></section>
+        <section class="pricing-card pricing-featured" role="listitem" aria-labelledby="pkg-recommended-title"><header class="pricing-header"><div class="pricing-badge" aria-hidden="true">Recommended</div><h3 id="pkg-recommended-title">Recommended</h3><div class="pricing-sub">Up to <strong>6</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-recommended-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-recommended-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-recommended-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-recommended-hours">0</dd></div><div class="pricing-kv-row"><dt>Person-sprints</dt><dd id="pkg-recommended-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-recommended-sprintCapacityHours">0</dd></div></dl></section>
+        <section class="pricing-card" role="listitem" aria-labelledby="pkg-express-title"><header class="pricing-header"><h3 id="pkg-express-title">Express</h3><div class="pricing-sub">Up to <strong>9</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-express-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-express-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-express-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-express-hours">0</dd></div><div class="pricing-kv-row"><dt>Person-sprints</dt><dd id="pkg-express-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-express-sprintCapacityHours">0</dd></div></dl></section>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. Effort &amp; Cost Model</h2>
+      <div class="grid options-grid">
+        <div><label for="basePersonDays">Base Person-Days per Score Point</label><input id="basePersonDays" type="number" step="0.1" value="0.4" /></div>
+        <div><label for="dailyRate">Daily Rate (USD)</label><input id="dailyRate" type="number" step="50" value="1200" /></div>
+        <div><label for="workDaysPerMonth">Work Days per Month</label><input id="workDaysPerMonth" type="number" step="1" value="20" /></div>
+        <div><label for="hoursPerDay">Hours per Work Day</label><input id="hoursPerDay" type="number" step="0.5" value="6" /></div>
+        <div><label for="sprintHours">Hours Per Person Per Sprint</label><input id="sprintHours" type="number" step="1" value="60" /></div>
+        <div><label for="teamMembers">Team Members Available</label><input id="teamMembers" type="number" step="1" value="3" /></div>
+        <div><label for="standardThreshold">Standard Threshold</label><input id="standardThreshold" type="number" step="1" value="40" /></div>
+        <div><label for="recommendedThreshold">Recommended Threshold</label><input id="recommendedThreshold" type="number" step="1" value="90" /></div>
+      </div>
     </div>
   </div>
 
-  <!-- 3. Results -->
-  <div class="card">
-    <h2>3. Results</h2>
-    <div class="results-grid results-buckets">
-      <div class="result-square">
-        <div class="result-label">Standard Size Bucket</div>
-        <div><span class="pill" id="sizeBucketStandard">–</span></div>
-        <div class="result-label">Man-Hours</div>
-        <div class="result-value" id="manHoursStandard">0.0</div>
-        <div class="result-label">Estimated Cost</div>
-        <div class="result-value" id="costStandard">$0</div>
-      </div>
-      <div class="result-square">
-        <div class="result-label">Recommended Size Bucket</div>
-        <div><span class="pill" id="sizeBucketRecommended">–</span></div>
-        <div class="result-label">Man-Hours</div>
-        <div class="result-value" id="manHoursRecommended">0.0</div>
-        <div class="result-label">Estimated Cost</div>
-        <div class="result-value" id="costRecommended">$0</div>
-      </div>
-      <div class="result-square">
-        <div class="result-label">Express Size Bucket</div>
-        <div><span class="pill" id="sizeBucketExpress">–</span></div>
-        <div class="result-label">Man-Hours</div>
-        <div class="result-value" id="manHoursExpress">0.0</div>
-        <div class="result-label">Estimated Cost</div>
-        <div class="result-value" id="costExpress">$0</div>
-      </div>
-    </div>
-    <div class="results-details">
-      <div>
-        <div class="result-label">Total Weighted Score</div>
-        <div class="result-value" id="totalScore">0.0</div>
-      </div>
-      <div>
-        <div class="result-label">Estimated Person-Days</div>
-        <div class="result-value" id="estimatedPersonDays">0.0</div>
-      </div>
-      <div>
-        <div class="result-label">Total Effort Hours</div>
-        <div class="result-value" id="totalHours">0.0</div>
-      </div>
-      <div>
-        <div class="result-label">Person-Sprints Required</div>
-        <div class="result-value" id="personSprints">0.0</div>
-      </div>
-      <div>
-        <div class="result-label">Sprints with Current Team</div>
-        <div class="result-value" id="calendarSprints">0.0</div>
-      </div>
-      <div>
-        <div class="result-label">Estimated Migration Cost (USD)</div>
-        <div class="result-value" id="estimatedCost">$0</div>
-      </div>
-    </div>
-    <p class="muted mt-075-block">
-      This is a rough planning estimate. Tune the weights and effort model as you gather actual migration data.
-    </p>
-  </div>
-
-  <!-- 4. Service Packages & Team Recommendation -->
-  <div class="card">
-    <h2>4. Service Packages & Team Recommendation</h2>
-    <div id="serviceSummary">
-      <!-- Populated by JS -->
-    </div>
-  </div>
-
-  <!-- 5. Effort & Cost Model (moved to bottom) -->
-  <div class="card">
-    <h2>5. Effort &amp; Cost Model</h2>
-    <div class="grid">
-      <div>
-        <label for="basePersonDays">
-          Base Person-Days per Score Point
-          <span
-            class="tooltip-icon"
-            title="How many person-days of effort you expect for each 1 point of total weighted score. Higher = more effort per unit of complexity. Tune this using historical migration data."
-          >ⓘ</span>
-        </label>
-        <!-- you can set this to 0.3 or 0.6 as you prefer -->
-        <input id="basePersonDays" type="number" step="0.1" value="0.3" />
-        <p class="muted">Person-days per 1 point of weighted score.</p>
-      </div>
-      <div>
-        <label for="dailyRate">
-          Daily Rate (USD)
-          <span
-            class="tooltip-icon"
-            title="Blended cost of one person-day of work (e.g., ~8 hours) including salary, benefits, and overhead. Used to convert effort into estimated migration cost."
-          >ⓘ</span>
-        </label>
-        <input id="dailyRate" type="number" step="50" value="200" />
-        <p class="muted">Blended cost per person-day.</p>
-      </div>
-      <div>
-        <label for="workDaysPerMonth">
-          Work Days per Month
-          <span
-            class="tooltip-icon"
-            title="How many working days you assume in a typical month. Used only for internal calibration and sanity checks."
-          >ⓘ</span>
-        </label>
-        <input id="workDaysPerMonth" type="number" step="1" value="20" />
-        <p class="muted">Reference value for planning.</p>
-      </div>
-      <div>
-        <label for="hoursPerDay">
-          Hours per Work Day
-          <span
-            class="tooltip-icon"
-            title="How many hours count as one full workday for planning (e.g., 6 or 8). Used to convert person-days into total hours and sprint-hours."
-          >ⓘ</span>
-        </label>
-        <input id="hoursPerDay" type="number" step="0.5" value="6" />
-        <p class="muted">Used to convert person-days to hours.</p>
-      </div>
-      <div>
-        <label for="sprintHours">
-          Sprint Hours per Person
-          <span
-            class="tooltip-icon"
-            title="Number of hours a single person is expected to contribute in one sprint. In your case, 60 hours per sprint per person."
-          >ⓘ</span>
-        </label>
-        <input id="sprintHours" type="number" step="1" value="60" />
-        <p class="muted">Hours of one person’s work in a sprint.</p>
-      </div>
-      <div>
-        <label for="teamMembers">
-          Team Members Available
-          <span
-            class="tooltip-icon"
-            title="How many people will actually be working on this migration. Used to convert person-sprints into calendar sprints."
-          >ⓘ</span>
-        </label>
-        <input id="teamMembers" type="number" step="1" value="3" />
-        <p class="muted">People assigned to this migration.</p>
-      </div>
-
-      <!-- XS–XXXL thresholds -->
-      <div>
-        <label for="xsThreshold">
-          XS Threshold
-          <span
-            class="tooltip-icon"
-            title="If the total weighted score is below this value, the app is classified as Extra Small (XS)."
-          >ⓘ</span>
-        </label>
-        <input id="xsThreshold" type="number" step="1" value="75" />
-        <p class="muted">Score &lt; XS = XS.</p>
-      </div>
-      <div>
-        <label for="sThreshold">
-          S Threshold
-          <span
-            class="tooltip-icon"
-            title="If the score is greater than or equal to the XS threshold but below this value, the app is Small (S)."
-          >ⓘ</span>
-        </label>
-        <input id="sThreshold" type="number" step="1" value="116" />
-        <p class="muted">XS ≤ Score &lt; S = S.</p>
-      </div>
-      <div>
-        <label for="mThreshold">
-          M Threshold
-          <span
-            class="tooltip-icon"
-            title="If the score is greater than or equal to the S threshold but below this value, the app is Medium (M)."
-          >ⓘ</span>
-        </label>
-        <input id="mThreshold" type="number" step="1" value="231" />
-        <p class="muted">S ≤ Score &lt; M = M.</p>
-      </div>
-      <div>
-        <label for="lThreshold">
-          L Threshold
-          <span
-            class="tooltip-icon"
-            title="If the score is greater than or equal to the M threshold but below this value, the app is Large (L)."
-          >ⓘ</span>
-        </label>
-        <input id="lThreshold" type="number" step="1" value="346" />
-        <p class="muted">M ≤ Score &lt; L = L.</p>
-      </div>
-      <div>
-        <label for="xlThreshold">
-          XL Threshold
-          <span
-            class="tooltip-icon"
-            title="If the score is greater than or equal to the L threshold but below this value, the app is Extra Large (XL)."
-          >ⓘ</span>
-        </label>
-        <input id="xlThreshold" type="number" step="1" value="461" />
-        <p class="muted">L ≤ Score &lt; XL = XL.</p>
-      </div>
-      <div>
-        <label for="xxlThreshold">
-          XXL Threshold
-          <span
-            class="tooltip-icon"
-            title="If the score is greater than or equal to the XL threshold but below this value, the app is XXL. Anything above this is XXXL (massive migration)."
-          >ⓘ</span>
-        </label>
-        <input id="xxlThreshold" type="number" step="1" value="576" />
-        <p class="muted">XL ≤ Score &lt; XXL = XXL, else XXXL.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // --- Export/Import Logic ---
-  function exportProgress() {
-    const data = {};
-    // Export all weights and required checkboxes
-    for (let i = 1; i <= factorCount; i++) {
-      data['weight-' + i] = document.getElementById('weight-' + i)?.value;
-      data['required-' + i] = document.getElementById('required-' + i)?.checked;
-    }
-    // Export other key fields (add more as needed)
-    [
-      'basePersonDays', 'dailyRate', 'workDaysPerMonth', 'hoursPerDay',
-      'xsThreshold', 'sThreshold', 'mThreshold', 'lThreshold', 'xlThreshold',
-      'appName', 'vendor', 'purpose', 'location', 'totalUsers', 'migrationType',
-      'notes'
-    ].forEach(id => {
-      const el = document.getElementById(id);
-      if (el) data[id] = el.value;
-    });
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    // Use appName if available, else fallback
-    let appName = (data['appName'] || '').trim();
-    if (!appName) appName = 'migration-tool';
-    // Sanitize appName for filename
-    appName = appName.replace(/[^a-z0-9\-_]+/gi, '_');
-    a.download = appName + '-size-estimate.json';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 100);
-  }
-
-  function importProgressFromFile(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const data = JSON.parse(e.target.result);
-        for (let i = 1; i <= factorCount; i++) {
-          const w = document.getElementById('weight-' + i);
-          if (w && data['weight-' + i] !== undefined) w.value = data['weight-' + i];
-          const r = document.getElementById('required-' + i);
-          if (r && data['required-' + i] !== undefined) r.checked = data['required-' + i];
-        }
-        [
-          'basePersonDays', 'dailyRate', 'workDaysPerMonth', 'hoursPerDay',
-          'xsThreshold', 'sThreshold', 'mThreshold', 'lThreshold', 'xlThreshold',
-          'appName', 'vendor', 'purpose', 'location', 'totalUsers', 'migrationType',
-          'notes'
-        ].forEach(id => {
-          const el = document.getElementById(id);
-          if (el && data[id] !== undefined) el.value = data[id];
-        });
-        calculate();
-        alert('Progress imported successfully!');
-      } catch (err) {
-        alert('Failed to import: ' + err.message);
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('exportBtn').addEventListener('click', exportProgress);
-    document.getElementById('importBtn').addEventListener('click', function() {
-      document.getElementById('importInput').click();
-    });
-    document.getElementById('importInput').addEventListener('change', function(e) {
-      if (e.target.files && e.target.files[0]) {
-        importProgressFromFile(e.target.files[0]);
-      }
-    });
-  });
-const factorCount = 43;
-(function() {
-  const defaultWeights = Array(factorCount).fill(5); // default weight 5 for each factor F1–F43
-  const defaultRatings = Array(factorCount).fill(5); // default rating 5 for each factor F1–F43
-  const defaultModel = {
-    basePersonDays: 10,
-    dailyRate: 200,
-    workDaysPerMonth: 20,
-    hoursPerDay: 6,
-    sprintHours: 60,
-    teamMembers: 6,
-    xsThreshold: 75,
-    sThreshold: 116,
-    mThreshold: 231,
-    lThreshold: 376,
-    xlThreshold: 461,
-    xxlThreshold: 576
-  };
-
-  function getNumber(id) {
-    const el = document.getElementById(id);
-    if (!el) return 0;
-    const v = parseFloat(el.value);
-    return isNaN(v) ? 0 : v;
-  }
-
-  function setBadgeClass(bucket) {
-    const el = document.getElementById('sizeBucket');
-    el.className = 'pill';
-    if (bucket === 'XS') el.classList.add('badge-xs');
-    else if (bucket === 'S') el.classList.add('badge-s');
-    else if (bucket === 'M') el.classList.add('badge-m');
-    else if (bucket === 'L') el.classList.add('badge-l');
-    else if (bucket === 'XL') el.classList.add('badge-xl');
-    else if (bucket === 'XXL') el.classList.add('badge-xxl');
-    else if (bucket === 'XXXL') el.classList.add('badge-xxxl');
-  }
-
-  function calculate() {
-    let totalScore = 0;
-    for (let i = 1; i <= factorCount; i++) {
-      const weight = getNumber('weight-' + i);
-      const required = document.getElementById('required-' + i).checked;
-      if (required) {
-        totalScore += weight;
-      }
-    }
-
-    document.getElementById('totalScore').textContent = totalScore.toFixed(1);
-
-    const xsThreshold  = getNumber('xsThreshold');
-    const sThreshold   = getNumber('sThreshold');
-    const mThreshold   = getNumber('mThreshold');
-    const lThreshold   = getNumber('lThreshold');
-    const xlThreshold  = getNumber('xlThreshold');
-    const xxlThreshold = getNumber('xxlThreshold');
-
-    // Standard, Recommended, Express multipliers
-    const multipliers = {
-      standard: 1,
-      recommended: 1.25,
-      express: 1.5
-    };
-
-    // Calculate buckets for each mode
-    function getBucket(score) {
-      if (score < xsThreshold) return 'XS';
-      else if (score < sThreshold) return 'S';
-      else if (score < mThreshold) return 'M';
-      else if (score < lThreshold) return 'L';
-      else if (score < xlThreshold) return 'XL';
-      else if (score < xxlThreshold) return 'XXL';
-      else return 'XXXL';
-    }
-
-    // Calculate for each mode
-    const basePersonDays = getNumber('basePersonDays');
-    const dailyRate      = getNumber('dailyRate');
-    const hoursPerDay    = getNumber('hoursPerDay');
-    const sprintHours    = getNumber('sprintHours');
-    const teamMembers    = getNumber('teamMembers');
-
-    // Standard
-    const personDaysStandard = totalScore * basePersonDays * multipliers.standard;
-    const totalHoursStandard = personDaysStandard * hoursPerDay;
-    const costStandard = personDaysStandard * dailyRate;
-    const bucketStandard = getBucket(totalScore);
-    document.getElementById('sizeBucketStandard').textContent = bucketStandard;
-    document.getElementById('manHoursStandard').textContent = totalHoursStandard.toFixed(1);
-    document.getElementById('costStandard').textContent = isNaN(costStandard) ? '$0' : '$' + Math.round(costStandard).toLocaleString();
-    setBadgeClassCustom('sizeBucketStandard', bucketStandard);
-
-    // Recommended
-    const personDaysRecommended = totalScore * basePersonDays * multipliers.recommended;
-    const totalHoursRecommended = personDaysRecommended * hoursPerDay;
-    const costRecommended = personDaysRecommended * dailyRate;
-    const bucketRecommended = getBucket(totalScore * multipliers.recommended);
-    document.getElementById('sizeBucketRecommended').textContent = bucketRecommended;
-    document.getElementById('manHoursRecommended').textContent = totalHoursRecommended.toFixed(1);
-    document.getElementById('costRecommended').textContent = isNaN(costRecommended) ? '$0' : '$' + Math.round(costRecommended).toLocaleString();
-    setBadgeClassCustom('sizeBucketRecommended', bucketRecommended);
-
-    // Express
-    const personDaysExpress = totalScore * basePersonDays * multipliers.express;
-    const totalHoursExpress = personDaysExpress * hoursPerDay;
-    const costExpress = personDaysExpress * dailyRate;
-    const bucketExpress = getBucket(totalScore * multipliers.express);
-    document.getElementById('sizeBucketExpress').textContent = bucketExpress;
-    document.getElementById('manHoursExpress').textContent = totalHoursExpress.toFixed(1);
-    document.getElementById('costExpress').textContent = isNaN(costExpress) ? '$0' : '$' + Math.round(costExpress).toLocaleString();
-    setBadgeClassCustom('sizeBucketExpress', bucketExpress);
-
-    // Original single bucket for legacy display
-    let bucket = getBucket(totalScore);
-    document.getElementById('sizeBucket').textContent = bucket;
-    setBadgeClass(bucket);
-
-    // Original details
-    const personDays = totalScore * basePersonDays;
-    const totalHours = personDays * hoursPerDay;
-    const cost       = personDays * dailyRate;
-
-    let personSprints = 0;
-    if (sprintHours > 0) {
-      personSprints = totalHours / sprintHours;
-    }
-
-    let calendarSprints = 0;
-    if (teamMembers > 0) {
-      calendarSprints = personSprints / teamMembers;
-    }
-
-    document.getElementById('estimatedPersonDays').textContent = personDays.toFixed(1);
-    document.getElementById('totalHours').textContent          = totalHours.toFixed(1);
-    document.getElementById('personSprints').textContent       = personSprints.toFixed(2);
-    document.getElementById('calendarSprints').textContent     = calendarSprints.toFixed(2);
-    document.getElementById('estimatedCost').textContent =
-      isNaN(cost) ? '$0' : '$' + Math.round(cost).toLocaleString();
-
-    // Helper for badge class for new squares
-    function setBadgeClassCustom(id, bucket) {
-      const el = document.getElementById(id);
-      el.className = 'pill';
-      if (bucket === 'XS') el.classList.add('badge-xs');
-      else if (bucket === 'S') el.classList.add('badge-s');
-      else if (bucket === 'M') el.classList.add('badge-m');
-      else if (bucket === 'L') el.classList.add('badge-l');
-      else if (bucket === 'XL') el.classList.add('badge-xl');
-      else if (bucket === 'XXL') el.classList.add('badge-xxl');
-      else if (bucket === 'XXXL') el.classList.add('badge-xxxl');
-    }
-
-    // --- Fusion Team Recommendation & Service Packages ---
-    const serviceSummary = document.getElementById('serviceSummary');
-    let effortText = `<strong>Total Effort:</strong> <span>${personDays.toFixed(1)} person-days, ${totalHours.toFixed(1)} hours, ${personSprints.toFixed(2)} person-sprints, ${calendarSprints.toFixed(2)} sprints with your team</span>`;
-    let costText = `<strong>Estimated Cost:</strong> <span>${isNaN(cost) ? '$0' : '$' + Math.round(cost).toLocaleString()}</span>`;
-
-    // Delivery speed factor
-    const deliverySpeed = document.getElementById('deliverySpeed').value;
-    let speedLabel = '';
-    let speedDesc = '';
-    let speedImpact = 1;
-    if (deliverySpeed === 'base') {
-      speedLabel = 'Base Development Speed';
-      speedDesc = 'Standard delivery timeline. Balanced cost and quality.';
-      speedImpact = 1;
-    } else if (deliverySpeed === 'medium') {
-      speedLabel = 'Medium Development Speed';
-      speedDesc = 'Accelerated delivery. May require additional resources or overtime.';
-      speedImpact = 1.25;
-    } else if (deliverySpeed === 'moq') {
-      speedLabel = 'MOQ Development Speed';
-      speedDesc = 'Maximum output speed. Highest resource allocation, premium cost.';
-      speedImpact = 1.5;
-    }
-
-    // Adjust cost and effort for speed
-    let speedCost = cost * speedImpact;
-    let speedEffort = personDays * speedImpact;
-    let speedHours = totalHours * speedImpact;
-    let speedPersonSprints = personSprints * speedImpact;
-    let speedCalendarSprints = calendarSprints * speedImpact;
-
-    // Fusion team options (speed impacts team suggestion)
-    const fusionTeams = [
-      {
-        name: 'Product Launch Team',
-        desc: 'Product Owner, UX/UI Designer, Developer (pro & citizen/low-code), Marketer, QA Tester. For new product launches, combining design, build, marketing, and quality.'
-      },
-      {
-        name: 'New Feature Development Team',
-        desc: 'Product Manager, Business Analyst, UX/UI Designer, Developer(s). For developing new features, combining vision, requirements, design, and build.'
-      },
-      {
-        name: 'Digital Operations Team',
-        desc: 'IT Operations/Admin, Business Analyst, Data Analyst, Change Management Specialist. For optimizing digital operations and user adoption.'
-      }
+  <script>
+    const packageDefs = [
+      { key: 'standard', teamCap: 3, rateMultiplier: 1.0 },
+      { key: 'recommended', teamCap: 6, rateMultiplier: 2.0 },
+      { key: 'express', teamCap: 9, rateMultiplier: 3.0 }
     ];
 
-    let migrationType = document.getElementById('migrationType').value || '';
-    let recommendedTeam = fusionTeams[0]; // Default: Product Launch Team
-    if (deliverySpeed === 'moq') {
-      // MOQ speed always recommends Product Launch Team for max output
-      recommendedTeam = fusionTeams[0];
-    } else if (deliverySpeed === 'medium') {
-      // Medium speed prefers New Feature Development Team
-      recommendedTeam = fusionTeams[1];
-    } else {
-      // Base speed uses migration type logic
-      if (migrationType.includes('Lift')) recommendedTeam = fusionTeams[2]; // Digital Operations Team
-      else if (migrationType.includes('Refactor')) recommendedTeam = fusionTeams[1]; // New Feature Development Team
-      else if (migrationType.includes('Replace')) recommendedTeam = fusionTeams[0]; // Product Launch Team
+    const defaultComplexityWeights = {
+      c_onPremDependency: 8,
+      c_hybridDependency: 6,
+      c_containerizationRequired: 7,
+      c_automatedTestingMissing: 5,
+      c_manualTestingExtended: 4,
+      c_deploymentInfraMissing: 6,
+      c_iacMissing: 6,
+      c_loggingUplift: 5,
+      c_backupDrMissing: 6,
+      c_identityIntegrationRequired: 6,
+      c_featureTrackingMissing: 2
+    };
+
+    function getComplexityWeight(id) {
+      return getNumber('w_' + id, defaultComplexityWeights[id] ?? 0);
     }
 
-    let teamText = `<strong>Recommended Fusion Team:</strong> <span class="fw-600">${recommendedTeam.name}</span><br /><span class="muted">${recommendedTeam.desc}</span>`;
-    let speedText = `<strong>Delivery Speed:</strong> <span class="fw-600">${speedLabel}</span><br /><span class="muted">${speedDesc}</span>`;
-
-    // Service packages by bucket and migration type, with speed impact
-    let packages = [];
-    migrationType = migrationType.toLowerCase();
-    if (migrationType.includes('lift')) {
-      if (bucket === 'XS' || bucket === 'S') {
-        packages.push({
-          name: 'Basic Migration',
-          desc: 'For small apps with minimal complexity. Includes planning, migration, and basic testing.',
-          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-        });
-        packages.push({
-          name: 'Standard Migration',
-          desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
-          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-        });
-      } else {
-        packages.push({
-          name: 'Standard Migration',
-          desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
-          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-        });
-      }
-    } else if (migrationType.includes('replatform') || migrationType.includes('refactor')) {
-      packages.push({
-        name: 'Standard Migration',
-        desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
-        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-      });
-      packages.push({
-        name: 'Premium Migration',
-        desc: 'For complex or mission-critical apps. Includes full planning, migration, advanced testing, refactoring, and post-migration support.',
-        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-      });
-    } else if (migrationType.includes('replace')) {
-      packages.push({
-        name: 'Premium Migration',
-        desc: 'For complex or mission-critical apps. Includes full planning, migration, advanced testing, refactoring, and post-migration support.',
-        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-      });
-    } else if (migrationType.includes('retire')) {
-      packages.push({
-        name: 'Retirement Package',
-        desc: 'For apps being decommissioned. Includes planning, data archiving, and system shutdown.',
-        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-      });
-    } else {
-      if (bucket === 'XS' || bucket === 'S') {
-        packages.push({
-          name: 'Basic Migration',
-          desc: 'For small apps with minimal complexity. Includes planning, migration, and basic testing.',
-          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-        });
-      } else if (bucket === 'M' || bucket === 'L') {
-        packages.push({
-          name: 'Standard Migration',
-          desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
-          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-        });
-      } else if (bucket === 'XL' || bucket === 'XXL' || bucket === 'XXXL') {
-        packages.push({
-          name: 'Premium Migration',
-          desc: 'For complex or mission-critical apps. Includes full planning, migration, advanced testing, refactoring, and post-migration support.',
-          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
-        });
-      }
+    function getNumber(id, fallback = 0) {
+      const element = document.getElementById(id);
+      if (!element) return fallback;
+      const value = parseFloat(element.value);
+      return Number.isFinite(value) ? value : fallback;
     }
 
-    let pkgHtml = '<strong>Service Packages:</strong>';
-    if (packages.length > 0) {
-      pkgHtml += '<ul class="mt-half-rem">';
-      packages.forEach(pkg => {
-        pkgHtml += `<li><span class="fw-600">${pkg.name}</span>: ${pkg.desc} <br />${pkg.price}</li>`;
-      });
-      pkgHtml += '</ul>';
-    } else {
-      pkgHtml += '<div class="muted">No package available for the current selection.</div>';
+    function formatMoney(value) {
+      return Number.isFinite(value) ? '$' + Math.round(value).toLocaleString() : '$0';
     }
 
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    }
 
-    serviceSummary.innerHTML = `<div class="mb-half-rem">${teamText}</div><div class="mb-half-rem">${speedText}</div><div class="mb-half-rem">${effortText}</div><div class="mb-half-rem">${pkgHtml}</div>`;
-  }
+    function bucketFor(score) {
+      const standardThreshold = getNumber('standardThreshold', 40);
+      const recommendedThreshold = getNumber('recommendedThreshold', 90);
+      if (score <= 0) return '–';
+      if (score < standardThreshold) return 'Standard';
+      if (score < recommendedThreshold) return 'Recommended';
+      return 'Express';
+    }
 
-  function hookInputs() {
-    const inputs = document.querySelectorAll('input, select');
-    inputs.forEach(el => {
-      el.addEventListener('change', calculate);
-      el.addEventListener('keyup', calculate);
+    function applyBucketClass(el, bucket) {
+      if (!el) return;
+      el.className = 'pill';
+      if (bucket === 'Standard') el.classList.add('badge-s');
+      else if (bucket === 'Recommended') el.classList.add('badge-m');
+      else if (bucket === 'Express') el.classList.add('badge-xl');
+    }
+
+    function getQuantifiedScore() {
+      const quantifiedIds = [
+        'q_users', 'q_rto', 'q_opsCost', 'q_dataVolume', 'q_loc', 'q_dbConfig', 'q_storageType',
+        'q_instancesDev', 'q_instancesTest', 'q_instancesStaging', 'q_instancesProd', 'q_instancesRel'
+      ];
+      return quantifiedIds.reduce((sum, id) => sum + getNumber(id, 0), 0);
+    }
+
+    function getComplexityScore() {
+      return Object.keys(defaultComplexityWeights).reduce((sum, id) => {
+        return sum + (document.getElementById(id)?.checked ? getComplexityWeight(id) : 0);
+      }, 0);
+    }
+
+    function getSecurityContextScore() {
+      let score = 0;
+      score += getNumber('impactLevelRequired', 1);
+      score += getNumber('secCap', 0);
+      score += getNumber('atoNeeded', 0);
+      score += getNumber('atoDocs', 0);
+      score += getNumber('azureEnclaveStatus', 0);
+
+      const enclaveChecks = ['enclaveIL2', 'enclaveIL4', 'enclaveIL5', 'enclaveIL6', 'enclaveOther'];
+      const selectedCount = enclaveChecks.filter((id) => document.getElementById(id)?.checked).length;
+      score += selectedCount;
+      return score;
+    }
+
+    function calculate() {
+      const quantifiedScore = getQuantifiedScore();
+      const complexityScore = getComplexityScore();
+      const securityScore = getSecurityContextScore();
+      const totalScore = quantifiedScore + complexityScore + securityScore;
+
+      const basePersonDays = getNumber('basePersonDays', 0.4);
+      const dailyRate = getNumber('dailyRate', 1200);
+      const hoursPerDay = getNumber('hoursPerDay', 6);
+      const sprintHours = getNumber('sprintHours', 60);
+      const teamMembers = getNumber('teamMembers', 3);
+
+      const personDays = totalScore * basePersonDays;
+      const totalHours = personDays * hoursPerDay;
+      const personSprints = sprintHours > 0 ? totalHours / sprintHours : 0;
+      const calendarSprints = teamMembers > 0 ? personSprints / teamMembers : 0;
+      const estimatedCost = personDays * dailyRate;
+
+      setText('totalScore', totalScore.toFixed(1));
+      setText('estimatedPersonDays', personDays.toFixed(1));
+      setText('totalHours', totalHours.toFixed(1));
+      setText('personSprints', personSprints.toFixed(2));
+      setText('calendarSprints', calendarSprints.toFixed(2));
+      setText('estimatedCost', formatMoney(estimatedCost));
+
+      const modes = [
+        { key: 'Standard', effortMultiplier: 1.0, scoreMultiplier: 1.0 },
+        { key: 'Recommended', effortMultiplier: 1.25, scoreMultiplier: 1.25 },
+        { key: 'Express', effortMultiplier: 1.5, scoreMultiplier: 1.5 }
+      ];
+
+      modes.forEach((mode) => {
+        const bucket = bucketFor(totalScore * mode.scoreMultiplier);
+        const hours = totalHours * mode.effortMultiplier;
+        const cost = estimatedCost * mode.effortMultiplier;
+        const bucketEl = document.getElementById('sizeBucket' + mode.key);
+        if (bucketEl) {
+          bucketEl.textContent = bucket;
+          applyBucketClass(bucketEl, bucket);
+        }
+        setText('manHours' + mode.key, hours.toFixed(1));
+        setText('cost' + mode.key, formatMoney(cost));
+      });
+
+      packageDefs.forEach((pkg) => {
+        const rate = dailyRate * pkg.rateMultiplier;
+        const cost = personDays * rate;
+        const sprintCapacityHours = sprintHours * pkg.teamCap;
+        const prefix = 'pkg-' + pkg.key;
+        document.getElementById(prefix + '-cost').textContent = Math.round(cost).toLocaleString();
+        document.getElementById(prefix + '-rate').textContent = formatMoney(rate);
+        document.getElementById(prefix + '-days').textContent = personDays.toFixed(1);
+        document.getElementById(prefix + '-hours').textContent = totalHours.toFixed(1);
+        document.getElementById(prefix + '-personSprints').textContent = personSprints.toFixed(2);
+        document.getElementById(prefix + '-sprintCapacityHours').textContent = sprintCapacityHours.toFixed(0);
+      });
+    }
+
+    function resetDefaults() {
+      document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+        checkbox.checked = false;
+      });
+
+      const defaults = {
+        basePersonDays: '0.4',
+        dailyRate: '1200',
+        workDaysPerMonth: '20',
+        hoursPerDay: '6',
+        sprintHours: '60',
+        teamMembers: '3',
+        standardThreshold: '40',
+        recommendedThreshold: '90',
+        impactLevelRequired: '1',
+        secCap: '0',
+        atoNeeded: '0',
+        atoDocs: '0',
+        azureEnclaveStatus: '0'
+      };
+
+      Object.entries(defaultComplexityWeights).forEach(([id, value]) => {
+        defaults['w_' + id] = String(value);
+      });
+
+      Object.entries(defaults).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) element.value = value;
+      });
+
+      calculate();
+    }
+
+    function exportProgress() {
+      const data = {};
+      document.querySelectorAll('input, select, textarea').forEach((el) => {
+        if (!el.id) return;
+        data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+      });
+      let appName = (data.appName || '').trim();
+      if (!appName) appName = 'migration-tool';
+      appName = appName.replace(/[^a-z0-9\-_]+/gi, '_');
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = appName + '-size-estimate.json';
+      document.body.appendChild(anchor);
+      anchor.click();
+      setTimeout(() => {
+        document.body.removeChild(anchor);
+        URL.revokeObjectURL(url);
+      }, 100);
+    }
+
+    function importProgressFromFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          Object.entries(data).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (!element) return;
+            if (element.type === 'checkbox') element.checked = Boolean(value);
+            else element.value = String(value ?? '');
+          });
+          calculate();
+          alert('Progress imported successfully!');
+        } catch (err) {
+          alert('Failed to import: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('input, select, textarea').forEach((el) => {
+        el.addEventListener('change', calculate);
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.addEventListener('keyup', calculate);
+      });
+
+      document.getElementById('recalcBtn').addEventListener('click', calculate);
+      document.getElementById('resetBtn').addEventListener('click', resetDefaults);
+      document.getElementById('exportBtn').addEventListener('click', exportProgress);
+      document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importInput').click());
+      document.getElementById('importInput').addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) importProgressFromFile(e.target.files[0]);
+      });
+
+      resetDefaults();
     });
-  }
-
-
-  function resetDefaults() {
-    for (let i = 1; i <= factorCount; i++) {
-      const w = document.getElementById('weight-' + i);
-      if (w) w.value = defaultWeights[i - 1];
-      // Remove rating-# lines (not present in table)
-    }
-    document.getElementById('basePersonDays').value   = defaultModel.basePersonDays;
-    document.getElementById('dailyRate').value        = defaultModel.dailyRate;
-    document.getElementById('workDaysPerMonth').value = defaultModel.workDaysPerMonth;
-    document.getElementById('hoursPerDay').value      = defaultModel.hoursPerDay;
-    document.getElementById('sprintHours').value      = defaultModel.sprintHours;
-    document.getElementById('teamMembers').value      = defaultModel.teamMembers;
-    document.getElementById('xsThreshold').value      = defaultModel.xsThreshold;
-    document.getElementById('sThreshold').value       = defaultModel.sThreshold;
-    document.getElementById('mThreshold').value       = defaultModel.mThreshold;
-    document.getElementById('lThreshold').value       = defaultModel.lThreshold;
-    document.getElementById('xlThreshold').value      = defaultModel.xlThreshold;
-    document.getElementById('xxlThreshold').value     = defaultModel.xxlThreshold;
-    document.getElementById('missionCriticality').value = '3';
-    document.getElementById('migrationType').value = '';
-    document.getElementById('deliverySpeed').value = 'Standard';
-    calculate();
-  }
-  document.addEventListener('DOMContentLoaded', function() {
-    hookInputs();
-    document.getElementById('recalcBtn').addEventListener('click', calculate);
-    document.getElementById('resetBtn').addEventListener('click', resetDefaults);
-    resetDefaults();
-  });
-
-  // Expose calculate globally
-  window.calculate = calculate;
-})();
-</script>
+  </script>
 </body>
 </html>

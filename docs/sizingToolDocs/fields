@@ -1,0 +1,125 @@
+// Easy Sizing Tool — field schema (inputs only)
+//
+// Notes:
+// - All dropdowns => type: "select"
+// - Multi-select dropdowns => type: "multiselect" (q_enclaves, q_impact) :contentReference[oaicite:1]{index=1}
+// - Complexity table: required-N (checkbox) + weight-N (number 1–10) :contentReference[oaicite:2]{index=2}
+// - Package/results fields are outputs, so excluded. :contentReference[oaicite:3]{index=3}
+
+export const EasySizingToolSchema = {
+  version: "1.0",
+  sections: [
+    {
+      id: "applicationInformation",
+      title: "Application Information",
+      fields: [
+        { id: "appName", label: "Application Name", type: "text" }, // :contentReference[oaicite:4]{index=4}
+        { id: "cloudStrategyDM", label: "Cloud Strategy Decision Maker", type: "text" }, // :contentReference[oaicite:5]{index=5}
+        { id: "cloudImplDM", label: "Cloud Implementation Decision Maker", type: "text" }, // :contentReference[oaicite:6]{index=6}
+        { id: "appOwner", label: "Application Owner(s)", type: "text" }, // :contentReference[oaicite:7]{index=7}
+
+        { id: "ownerAvailability", label: "Owner Availability Next 4 Weeks", type: "yesno" }, // :contentReference[oaicite:8]{index=8}
+
+        {
+          id: "targetCloud",
+          label: "Target Cloud Environment",
+          type: "select",
+          options: ["Commercial", "GCC", "GCC High", "IL5", "IL6"], // explicitly listed :contentReference[oaicite:9]{index=9}
+        },
+
+        { id: "azureSub", label: "Azure Subscription Established", type: "yesno" }, // :contentReference[oaicite:10]{index=10}
+        { id: "rolePerms", label: "Required Role Permissions Available", type: "yesno" }, // :contentReference[oaicite:11]{index=11}
+
+        {
+          id: "azureExp",
+          label: "Azure Experience Level",
+          type: "select",
+          options: ["New", "Moderate", "Advanced"], // explicitly listed :contentReference[oaicite:12]{index=12}
+        },
+
+        { id: "archDiagram", label: "Architecture Diagram Available", type: "yesno" }, // :contentReference[oaicite:13]{index=13}
+        { id: "dbDiagram", label: "Database Diagram Available", type: "yesno" }, // :contentReference[oaicite:14]{index=14}
+        { id: "atoDocs", label: "ATO Documentation Available", type: "yesno" }, // :contentReference[oaicite:15]{index=15}
+        { id: "azureCAP", label: "Azure CAP Created", type: "yesno" }, // :contentReference[oaicite:16]{index=16}
+        { id: "azureEnclave", label: "Azure Enclave Accredited", type: "yesno" }, // :contentReference[oaicite:17]{index=17}
+
+        { id: "notes", label: "Notes", type: "textarea" }, // :contentReference[oaicite:18]{index=18}
+      ],
+    },
+
+    {
+      id: "quantifiedInputs",
+      title: "Quantified Inputs",
+      fields: [
+        { id: "q_enclaves", label: "Enclaves", type: "multiselect", options: [] }, // :contentReference[oaicite:19]{index=19}
+        { id: "q_cap", label: "CAP", type: "select", options: [] }, // :contentReference[oaicite:20]{index=20}
+        { id: "q_users", label: "Users", type: "select", options: [] }, // :contentReference[oaicite:21]{index=21}
+        { id: "q_rto", label: "RTO", type: "select", options: [] }, // :contentReference[oaicite:22]{index=22}
+        { id: "q_impact", label: "Impact Levels", type: "multiselect", options: [] }, // :contentReference[oaicite:23]{index=23}
+        { id: "q_dataSensitivity", label: "Data Sensitivity", type: "select", options: [] }, // :contentReference[oaicite:24]{index=24}
+        { id: "q_rmf", label: "RMF Categorization", type: "select", options: [] }, // :contentReference[oaicite:25]{index=25}
+        { id: "q_ato", label: "ATO Status", type: "select", options: [] }, // :contentReference[oaicite:26]{index=26}
+        { id: "q_certCycle", label: "Certification Cycle", type: "select", options: [] }, // :contentReference[oaicite:27]{index=27}
+        { id: "q_opsCost", label: "Operations Cost", type: "select", options: [] }, // :contentReference[oaicite:28]{index=28}
+        { id: "q_docStatus", label: "Documentation Status", type: "select", options: [] }, // :contentReference[oaicite:29]{index=29}
+        { id: "q_archDiagram", label: "Architecture Diagram", type: "select", options: [] }, // :contentReference[oaicite:30]{index=30}
+        { id: "q_hwSpecs", label: "Hardware Specs", type: "select", options: [] }, // :contentReference[oaicite:31]{index=31}
+        { id: "q_containerized", label: "Containerized", type: "select", options: [] }, // :contentReference[oaicite:32]{index=32}
+        { id: "q_onPrem", label: "On-Prem", type: "select", options: [] }, // :contentReference[oaicite:33]{index=33}
+        { id: "q_hybrid", label: "Hybrid", type: "select", options: [] }, // :contentReference[oaicite:34]{index=34}
+        { id: "q_dbConfig", label: "DB Configuration", type: "select", options: [] }, // :contentReference[oaicite:35]{index=35}
+        { id: "q_dataVolume", label: "Data Volume", type: "select", options: [] }, // :contentReference[oaicite:36]{index=36}
+        { id: "q_loc", label: "LOC", type: "select", options: [] }, // :contentReference[oaicite:37]{index=37}
+        { id: "q_autoTest", label: "Automated Testing", type: "select", options: [] }, // :contentReference[oaicite:38]{index=38}
+        { id: "q_manualTest", label: "Manual Testing", type: "select", options: [] }, // :contentReference[oaicite:39]{index=39}
+        { id: "q_deployInfra", label: "Deployment Infrastructure", type: "select", options: [] }, // :contentReference[oaicite:40]{index=40}
+        { id: "q_iac", label: "Infrastructure as Code (IaC)", type: "select", options: [] }, // :contentReference[oaicite:41]{index=41}
+        { id: "q_logging", label: "Logging", type: "select", options: [] }, // :contentReference[oaicite:42]{index=42}
+        { id: "q_maintCadence", label: "Maintenance Cadence", type: "select", options: [] }, // :contentReference[oaicite:43]{index=43}
+        { id: "q_identity", label: "Identity", type: "select", options: [] }, // :contentReference[oaicite:44]{index=44}
+        { id: "q_featureTrack", label: "Feature Tracking", type: "select", options: [] }, // :contentReference[oaicite:45]{index=45}
+        { id: "q_backupDR", label: "Backup / DR", type: "select", options: [] }, // :contentReference[oaicite:46]{index=46}
+        { id: "q_storageType", label: "Storage Type", type: "select", options: [] }, // :contentReference[oaicite:47]{index=47}
+
+        { id: "q_instancesDev", label: "Instances - Dev", type: "select", options: [] }, // :contentReference[oaicite:48]{index=48}
+        { id: "q_instancesTest", label: "Instances - Test", type: "select", options: [] }, // :contentReference[oaicite:49]{index=49}
+        { id: "q_instancesStaging", label: "Instances - Staging", type: "select", options: [] }, // :contentReference[oaicite:50]{index=50}
+        { id: "q_instancesProd", label: "Instances - Prod", type: "select", options: [] }, // :contentReference[oaicite:51]{index=51}
+        { id: "q_instancesRel", label: "Instances - Rel", type: "select", options: [] }, // :contentReference[oaicite:52]{index=52}
+      ],
+    },
+
+    {
+      id: "complexityFactors",
+      title: "Migration Complexity Factors (F1–F43)",
+      // This matches your implementation detail: required-N + weight-N is the scoring source of truth. :contentReference[oaicite:53]{index=53}
+      fields: Array.from({ length: 43 }, (_, i) => {
+        const n = i + 1;
+        return [
+          { id: `required-${n}`, label: `Factor ${n} required`, type: "checkbox" },
+          { id: `weight-${n}`, label: `Factor ${n} weight`, type: "number", min: 1, max: 10, step: 1 },
+        ];
+      }).flat(),
+    },
+
+    {
+      id: "effortCostModel",
+      title: "Effort & Cost Model Inputs",
+      fields: [
+        { id: "basePersonDays", label: "Base person-days per point", type: "number", min: 0, step: 0.01 },
+        { id: "dailyRate", label: "Daily rate (USD)", type: "number", min: 0, step: 1 },
+        { id: "workDaysPerMonth", label: "Work days per month", type: "number", min: 0, step: 1 },
+        { id: "hoursPerDay", label: "Hours per day", type: "number", min: 0, step: 0.5 },
+        { id: "sprintHours", label: "Sprint hours per person", type: "number", min: 0, step: 1 },
+        { id: "teamMembers", label: "Team members", type: "number", min: 0, step: 1 },
+
+        { id: "xsThreshold", label: "XS threshold", type: "number", min: 0, step: 1 },
+        { id: "sThreshold", label: "S threshold", type: "number", min: 0, step: 1 },
+        { id: "mThreshold", label: "M threshold", type: "number", min: 0, step: 1 },
+        { id: "lThreshold", label: "L threshold", type: "number", min: 0, step: 1 },
+        { id: "xlThreshold", label: "XL threshold", type: "number", min: 0, step: 1 },
+        { id: "xxlThreshold", label: "XXL threshold", type: "number", min: 0, step: 1 },
+      ], // :contentReference[oaicite:54]{index=54}
+    },
+  ],
+};
