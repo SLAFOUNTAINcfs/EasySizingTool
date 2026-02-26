@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey Field Reference</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', sans-serif; background: #f5f6f8; color: #2e323e; padding: 2rem; }
+  h1 { text-align: center; font-size: 1.6rem; margin-bottom: .3rem; color: #0b4d99; }
+  .subtitle { text-align: center; color: #777; font-size: .9rem; margin-bottom: 2rem; }
+  .survey { max-width: 900px; margin: 0 auto 3rem; }
+  .survey-title {
+    font-size: 1.25rem; font-weight: 700; color: #fff; background: #0b4d99;
+    padding: .75rem 1.25rem; border-radius: 8px 8px 0 0;
+  }
+  .survey-title span { font-weight: 400; opacity: .75; font-size: .85rem; margin-left: .5rem; }
+  .fields { background: #fff; border: 1px solid #dde; border-top: none; border-radius: 0 0 8px 8px; }
+  .field { padding: .85rem 1.25rem; border-bottom: 1px solid #eef0f3; }
+  .field:last-child { border-bottom: none; }
+  .field-header { display: flex; align-items: baseline; gap: .5rem; flex-wrap: wrap; }
+  .field-label { font-weight: 600; font-size: .95rem; }
+  .field-meta { font-size: .75rem; color: #999; }
+  .section-header {
+    padding: .6rem 1.25rem; background: #edf2f7; font-weight: 700;
+    font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: #0b4d99;
+    border-bottom: 1px solid #dde;
+  }
+  .options { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .4rem; }
+  .option {
+    background: #edf2f7; color: #3a4a5e; padding: .2rem .6rem;
+    border-radius: 4px; font-size: .8rem;
+  }
+  .no-options { font-size: .8rem; color: #aaa; font-style: italic; margin-top: .3rem; }
+</style>
+</head>
+<body>
+
+<h1>vKesi Survey Field Reference</h1>
+<p class="subtitle">Application Owner Survey &amp; Technical Lead Survey — Fields &amp; Dataset Values</p>
+
+<!-- ================= APPLICATION OWNER SURVEY ================= -->
+<div class="survey">
+  <div class="survey-title">Application Owner Survey <span>21 fields</span></div>
+  <div class="fields">
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">What is the name of Application?</span><span class="field-meta">AMTText1 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Vendor</span><span class="field-meta">AMTText3 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">What is the purpose of the application?</span><span class="field-meta">AMTNote2 · text (multiline)</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">What Enclaves does the application exist in?</span><span class="field-meta">AMTMultiSelect1 · multi-select · Enclaves</span></div>
+      <div class="options">
+        <span class="option">IL2</span><span class="option">IL4</span><span class="option">IL5</span><span class="option">IL6</span><span class="option">Other</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Do you have a CAP (Azure Cloud Access Point) if required?</span><span class="field-meta">AMTSelect46 · select · YesNoNA</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span><span class="option">N/A</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">How many people use your application?</span><span class="field-meta">AMTSelect8 · select · Total Users</span></div>
+      <div class="options">
+        <span class="option">Less than 10</span><span class="option">11 to 20</span><span class="option">21 to 50</span><span class="option">50 to 100</span><span class="option">Over 100</span>
+      </div>
+    </div>
+
+    <div class="section-header">Availability and Disaster Requirements</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">What are your RTO Requirements?</span><span class="field-meta">AMTSelect9 · select · RTO Requirements</span></div>
+      <div class="options">
+        <span class="option">Mission Critical (minutes)</span><span class="option">Business Critical (hours)</span><span class="option">Low Critical (days)</span>
+      </div>
+    </div>
+
+    <div class="section-header">Security and Compliance Requirements</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Impact Levels (Where do you need this to live?)</span><span class="field-meta">AMTMultiSelect3 · multi-select · Impact Levels</span></div>
+      <div class="options">
+        <span class="option">IL2</span><span class="option">IL4</span><span class="option">IL5</span><span class="option">IL6</span><span class="option">Other</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Data Sensitivity</span><span class="field-meta">AMTSelect10 · select · Data Sensitivity</span></div>
+      <div class="options">
+        <span class="option">Confidential</span><span class="option">Secret</span><span class="option">Top Secret</span><span class="option">SCI / SAP</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">RMF Categorization</span><span class="field-meta">AMTSelect11 · select · RMF Categories</span></div>
+      <div class="options">
+        <span class="option">High</span><span class="option">Medium</span><span class="option">Low</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Date ATO Granted</span><span class="field-meta">AMTDate1 · date</span></div>
+      <div class="no-options">Date picker</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Does the application need an ATO?</span><span class="field-meta">AMTSelect12 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">What is the Certification Cycle?</span><span class="field-meta">AMTSelect13 · select · Certification Cycle</span></div>
+      <div class="options">
+        <span class="option">6 Months</span><span class="option">1 Year</span><span class="option">2 Year</span><span class="option">Other</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Certification Cycle Other</span><span class="field-meta">AMTNote3 · text (multiline) · conditional on "Other"</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Current App Version</span><span class="field-meta">AMTText4 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Target Migration Version</span><span class="field-meta">AMTText5 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Does the application have an export functionality?</span><span class="field-meta">AMTSelect14 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Current Operations Costs</span><span class="field-meta">AMTSelect15 · select · Operation Costs</span></div>
+      <div class="options">
+        <span class="option">Less than $1,000</span><span class="option">$1,000 to $1,999</span><span class="option">$2,000 to $4,999</span><span class="option">$5,000 to $9,999</span><span class="option">$10,000 to $19,999</span><span class="option">$20,000 to $50,000</span><span class="option">Greater than $50,000</span>
+      </div>
+    </div>
+
+    <div class="section-header">Documentation and Knowledge Availability</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Is Documentation up-to-date?</span><span class="field-meta">AMTSelect16 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Do you have any relevant Architecture Diagrams?</span><span class="field-meta">AMTSelect17 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Upload Relevant Architecture Diagrams</span><span class="field-meta">VKLTemplateDoc · upload · conditional on "Yes"</span></div>
+      <div class="no-options">File upload (max 1)</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= TECHNICAL LEAD SURVEY ================= -->
+<div class="survey">
+  <div class="survey-title">Technical Lead Survey <span>35 fields</span></div>
+  <div class="fields">
+
+    <div class="section-header">Tech Stack</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">What is the hardware/resource specifications for databases in use?</span><span class="field-meta">AMTNote9 · text (multiline)</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Is the application currently containerized or planned to be?</span><span class="field-meta">AMTSelect43 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="section-header">Number of Integrations</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Does your application utilize any 3rd Party Applications?</span><span class="field-meta">AMTSelect18 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Modules</span><span class="field-meta">AMTSelect20 · select · Modules</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4</span><span class="option">5</span><span class="option">6+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Sub Apps</span><span class="field-meta">AMTSelect21 · select · Sub Apps</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4</span><span class="option">5</span><span class="option">6+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">APIs</span><span class="field-meta">AMTSelect22 · select · APIs</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4</span><span class="option">5</span><span class="option">6+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Languages</span><span class="field-meta">AMTMultiSelect2 · multi-select · Languages</span></div>
+      <div class="options">
+        <span class="option">Python</span><span class="option">Java</span><span class="option">JavaScript</span><span class="option">C++</span><span class="option">Ruby</span><span class="option">Other</span>
+      </div>
+    </div>
+
+    <div class="section-header">Dependencies</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">On Prem</span><span class="field-meta">AMTSelect23 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Hybrid</span><span class="field-meta">AMTSelect24 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="section-header">Data Complexity</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Database Configuration</span><span class="field-meta">AMTSelect40 · select · Database Configurations</span></div>
+      <div class="options">
+        <span class="option">Single Database</span><span class="option">Multiple Databases</span><span class="option">Other</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Data Volume</span><span class="field-meta">AMTSelect37 · select · Data Volume</span></div>
+      <div class="options">
+        <span class="option">10 GB</span><span class="option">10 to 100 GB</span><span class="option">100 GB to 1 TB</span><span class="option">1 TB+</span><span class="option">I don't know</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Total Lines of Code</span><span class="field-meta">AMTSelect36 · select · Application Size</span></div>
+      <div class="options">
+        <span class="option">Small (less than 1000 lines of code)</span><span class="option">Medium (1000 to 5000 lines of code)</span><span class="option">Large (Over 5000 lines of code)</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Total VMs and Allocated Hardware in use for the Application</span><span class="field-meta">AMTText8 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Script Integration</span><span class="field-meta">AMTNote5 · text (multiline)</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Data Exchanges</span><span class="field-meta">AMTNote4 · text (multiline)</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="section-header">Testing Requirements</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Automated Testing?</span><span class="field-meta">AMTSelect25 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Manual Testing</span><span class="field-meta">AMTSelect26 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Cutover and Rollback Complexity</span><span class="field-meta">AMTSelect27 · select · Cutover Rollback Complexity</span></div>
+      <div class="options">
+        <span class="option">Simple</span><span class="option">Standard</span><span class="option">Complex</span><span class="option">Very Complex</span>
+      </div>
+    </div>
+
+    <div class="section-header">Automation and Tooling Readiness</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Existing Deployment Infrastructure?</span><span class="field-meta">AMTSelect28 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">IAC?</span><span class="field-meta">AMTSelect29 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Does the application require logging?</span><span class="field-meta">AMTSelect30 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Licensing</span><span class="field-meta">AMTNote6 · text (multiline)</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Certification Cycles</span><span class="field-meta">AMTNote7 · text (multiline)</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="section-header">Maintenance Cadence</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">When was the last time the code base was updated?</span><span class="field-meta">AMTText6 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Are there any specific requirements and/or plans for Identity Management in the cloud?</span><span class="field-meta">AMTSelect39 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Specific Requirements and Plans</span><span class="field-meta">AMTNote8 · text (multiline) · conditional on "Yes"</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Is there currently feature issue tracking in this application?</span><span class="field-meta">AMTSelect44 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Are there currently any backup or disaster recovery strategies in place?</span><span class="field-meta">AMTSelect41 · select · YesNo</span></div>
+      <div class="options">
+        <span class="option">Yes</span><span class="option">No</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Backup Schedule</span><span class="field-meta">AMTText7 · text</span></div>
+      <div class="no-options">Free text</div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Data Storage Type</span><span class="field-meta">AMTSelect3 · select · Storage Types</span></div>
+      <div class="options">
+        <span class="option">Hot</span><span class="option">Warm</span><span class="option">Cold</span>
+      </div>
+    </div>
+
+    <div class="section-header">Number of Instances</div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Dev</span><span class="field-meta">AMTSelect31 · select · Number of Instances</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Test</span><span class="field-meta">AMTSelect32 · select · Number of Instances</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Staging</span><span class="field-meta">AMTSelect33 · select · Number of Instances</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Prod</span><span class="field-meta">AMTSelect34 · select · Number of Instances</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4+</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-header"><span class="field-label">Rel</span><span class="field-meta">AMTSelect35 · select · Number of Instances</span></div>
+      <div class="options">
+        <span class="option">0</span><span class="option">1</span><span class="option">2</span><span class="option">3</span><span class="option">4+</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

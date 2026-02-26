@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EST</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles/migrationtool.css" />
+</head>
+<body>
+<div class="container">
+    <h1>Easy Sizing Tool</h1>
+    <div class="export-import-controls">
+      <button id="exportBtn" type="button">Export Progress</button>
+      <label for="importInput" class="visually-hidden">Import Progress File</label>
+      <input id="importInput" type="file" accept="application/json" title="Import Progress File (JSON)" />
+      <button id="importBtn" type="button">Import Progress</button>
+    </div>
+  <p class="muted">
+    Select what factors are involved in the migration of this application. Click "Recalculate" to see the estimated effort and size bucket for this migration.
+  </p>
+
+  <!-- 1. Application Information -->
+  <div class="card">
+    <h2>1. Application Information </h2>
+    <div class="grid">
+      <div>
+        <label for="appName">Application Name</label>
+        <input id="appName" type="text" placeholder="e.g., Claims API" />
+      </div>
+      <div>
+        <label for="missionOwner">Product Owner</label>
+        <input id="missionOwner" type="text" placeholder="e.g., Claims Ops" />
+      </div>
+      <div>
+        <label for="technicalOwner">Technical SME</label>
+        <input id="technicalOwner" type="text" placeholder="e.g., John Doe" />
+      </div>
+      <div>
+        <label for="missionCriticality">
+          Mission Criticality (1–3)
+          <span
+            class="tooltip-icon"
+            title="How critical is this application to your business operations? 1 = Mission Enable (nice to have), 2 = Mission Essential (important but not catastrophic if delayed), 3 = Mission Critical (core to business, must succeed)."
+          >ⓘ</span>
+        </label>
+        <select id="missionCriticality">
+          <option value="">–</option>
+          <option value="1">1 – Mission Enable</option>
+          <option value="2">2 – Mission Essential</option>
+          <option value="3">3 – Mission Critical</option>
+        </select>
+      </div>
+      <div>
+        <label for="migrationType">
+          Migration Type
+          <span
+            class="tooltip-icon"
+            title="Intended migration approach: Lift & Shift (minimal change), Replatforming (move + some changes), Refactor (significant redesign), Replace (new system), or Retire (turn it off)."
+          >ⓘ</span>
+        </label>
+        <select id="migrationType">
+          <option value="">–</option>
+          <option>Lift &amp; Shift, Move as is</option>
+          <option>Replatform, Make moderate changes</option>
+          <option>Refactor, Significant redesign</option>
+          <option>Replace, Replace with a New Application</option>
+        </select>
+      </div>
+      <div>
+        <label for="deliverySpeed">
+          Delivery Speed
+          <span
+            class="tooltip-icon"
+            title="Select the desired speed for migration delivery. Impacts team composition and service package."
+          >ⓘ</span>
+        </label>
+        <select id="deliverySpeed">
+          <option value="Standard">Base Development Speed</option>
+          <option value="Recommended">Medium Development Speed</option>
+          <option value="Expedited">MOQ Development Speed</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Complexity Factors (moved up) -->
+  <div class="card">
+    <h2>2. Complexity Factors</h2>
+    <p class="muted">
+      Adjust the <strong>Weight</strong> (importance) for your organization. Use the <strong>Rating</strong> dropdown to score this specific application.
+    </p>
+    <div class="scroll-x">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Factor</th>
+            <th>Description</th>
+            <th class="weight-col">Weight (1–10)</th>
+            <th class="required-col">Required?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Application Information Group -->
+          <tr><td colspan="5" class="section-header">Application Information</td></tr>
+          <tr>
+            <td>F1</td>
+            <td>Application Name</td>
+            <td class="desc">Name of the application.</td>
+            <td><label for="weight-1" class="visually-hidden">Weight for Application Name</label><input id="weight-1" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-1" class="visually-hidden">Required for Application Name</label><input id="required-1" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F2</td>
+            <td>Vendor</td>
+            <td class="desc">Application vendor or provider.</td>
+            <td><label for="weight-2" class="visually-hidden">Weight for Vendor</label><input id="weight-2" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-2" class="visually-hidden">Required for Vendor</label><input id="required-2" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F3</td>
+            <td>App Purpose</td>
+            <td class="desc">Primary business function or purpose.</td>
+            <td><label for="weight-3" class="visually-hidden">Weight for App Purpose</label><input id="weight-3" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-3" class="visually-hidden">Required for App Purpose</label><input id="required-3" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F4</td>
+            <td>App Location (Enclave)</td>
+            <td class="desc">Hosting location or enclave.</td>
+            <td><label for="weight-4" class="visually-hidden">Weight for App Location</label><input id="weight-4" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-4" class="visually-hidden">Required for App Location</label><input id="required-4" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F5</td>
+            <td>Total Users</td>
+            <td class="desc">Estimated or actual user count.</td>
+            <td><label for="weight-5" class="visually-hidden">Weight for Total Users</label><input id="weight-5" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-5" class="visually-hidden">Required for Total Users</label><input id="required-5" type="checkbox" /></td>
+          </tr>
+          <!-- Operations & Maintenance Group -->
+          <tr><td colspan="5" class="section-header">Operations & Maintenance</td></tr>
+          <tr>
+            <td>F6</td>
+            <td>Current Operations Costs</td>
+            <td class="desc">Annual or monthly cost to operate the app.</td>
+            <td><label for="weight-6" class="visually-hidden">Weight for Current Operations Costs</label><input id="weight-6" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-6" class="visually-hidden">Required for Current Operations Costs</label><input id="required-6" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F7</td>
+            <td>Maintenance Cadence</td>
+            <td class="desc">How often is the codebase updated? When was the last update?</td>
+            <td><label for="weight-7" class="visually-hidden">Weight for Maintenance Cadence</label><input id="weight-7" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-7" class="visually-hidden">Required for Maintenance Cadence</label><input id="required-7" type="checkbox" /></td>
+          </tr>
+
+          <!-- Security & Compliance Group -->
+          <tr><td colspan="5" class="section-header">Security & Compliance</td></tr>
+          <tr>
+            <td>F8</td>
+            <td>Security & Compliance Requirements</td>
+            <td class="desc">Regulated data, special controls (PCI, HIPAA, CJIS, etc.).</td>
+            <td><label for="weight-8" class="visually-hidden">Weight for Security & Compliance Requirements</label><input id="weight-8" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-8" class="visually-hidden">Required for Security & Compliance Requirements</label><input id="required-8" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F9</td>
+            <td>Impact Levels</td>
+            <td class="desc">Where does this app need to live? (IL2, IL4, IL5, etc.)</td>
+            <td><label for="weight-9" class="visually-hidden">Weight for Impact Levels</label><input id="weight-9" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-9" class="visually-hidden">Required for Impact Levels</label><input id="required-9" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F10</td>
+            <td>Data Sensitivity</td>
+            <td class="desc">Level of data sensitivity (PII, PHI, classified, etc.).</td>
+            <td><label for="weight-10" class="visually-hidden">Weight for Data Sensitivity</label><input id="weight-10" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-10" class="visually-hidden">Required for Data Sensitivity</label><input id="required-10" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F11</td>
+            <td>RMF Categorization</td>
+            <td class="desc">Risk Management Framework categorization.</td>
+            <td><label for="weight-11" class="visually-hidden">Weight for RMF Categorization</label><input id="weight-11" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-11" class="visually-hidden">Required for RMF Categorization</label><input id="required-11" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F12</td>
+            <td>ATO Status</td>
+            <td class="desc">Authority to Operate status (Y/N, in progress, etc.).</td>
+            <td><label for="weight-12" class="visually-hidden">Weight for ATO Status</label><input id="weight-12" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-12" class="visually-hidden">Required for ATO Status</label><input id="required-12" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F13</td>
+            <td>ATO?</td>
+            <td class="desc">Does the app have an ATO? (Yes/No)</td>
+            <td><label for="weight-13" class="visually-hidden">Weight for ATO?</label><input id="weight-13" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-13" class="visually-hidden">Required for ATO?</label><input id="required-13" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F14</td>
+            <td>Certification Cycle</td>
+            <td class="desc">Frequency and timing of certification cycles.</td>
+            <td><label for="weight-14" class="visually-hidden">Weight for Certification Cycle</label><input id="weight-14" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-14" class="visually-hidden">Required for Certification Cycle</label><input id="required-14" type="checkbox" /></td>
+          </tr>
+
+          <!-- Tech Stack & Dependencies Group -->
+          <tr><td colspan="5" class="section-header">Tech Stack & Dependencies</td></tr>
+          <tr>
+            <td>F15</td>
+            <td>Tech Stack</td>
+            <td class="desc">Languages, frameworks, platforms, and tools used.</td>
+            <td><label for="weight-15" class="visually-hidden">Weight for Tech Stack</label><input id="weight-15" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-15" class="visually-hidden">Required for Tech Stack</label><input id="required-15" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F16</td>
+            <td>3rd Party Apps</td>
+            <td class="desc">External applications or vendor software integrated.</td>
+            <td><label for="weight-16" class="visually-hidden">Weight for 3rd Party Apps</label><input id="weight-16" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-16" class="visually-hidden">Required for 3rd Party Apps</label><input id="required-16" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F17</td>
+            <td>Number of Integrations</td>
+            <td class="desc">APIs, modules, sub-apps, data exchanges, etc.</td>
+            <td><label for="weight-17" class="visually-hidden">Weight for Number of Integrations</label><input id="weight-17" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-17" class="visually-hidden">Required for Number of Integrations</label><input id="required-17" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F18</td>
+            <td>Modules / Sub-apps</td>
+            <td class="desc">Distinct modules or sub-applications within the system.</td>
+            <td><label for="weight-18" class="visually-hidden">Weight for Modules / Sub-apps</label><input id="weight-18" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-18" class="visually-hidden">Required for Modules / Sub-apps</label><input id="required-18" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F19</td>
+            <td>APIs</td>
+            <td class="desc">APIs exposed or consumed by the application.</td>
+            <td><label for="weight-19" class="visually-hidden">Weight for APIs</label><input id="weight-19" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-19" class="visually-hidden">Required for APIs</label><input id="required-19" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F20</td>
+            <td>Data Exchanges</td>
+            <td class="desc">Data exchanges with other systems or apps.</td>
+            <td><label for="weight-20" class="visually-hidden">Weight for Data Exchanges</label><input id="weight-20" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-20" class="visually-hidden">Required for Data Exchanges</label><input id="required-20" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F21</td>
+            <td>Code Languages</td>
+            <td class="desc">Programming languages used in the application.</td>
+            <td><label for="weight-21" class="visually-hidden">Weight for Code Languages</label><input id="weight-21" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-21" class="visually-hidden">Required for Code Languages</label><input id="required-21" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F22</td>
+            <td>Dependencies (On-prem/Hybrid)</td>
+            <td class="desc">On-premises, hybrid, or external dependencies.</td>
+            <td><label for="weight-22" class="visually-hidden">Weight for Dependencies</label><input id="weight-22" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-22" class="visually-hidden">Required for Dependencies</label><input id="required-22" type="checkbox" /></td>
+          </tr>
+
+          <!-- Database Group -->
+          <tr><td colspan="5" class="section-header">Database</td></tr>
+          <tr>
+            <td>F23</td>
+            <td>Database Complexity</td>
+            <td class="desc">Stored procs, triggers, cross-DB dependencies, vendor features.</td>
+            <td><label for="weight-23" class="visually-hidden">Weight for Database Complexity</label><input id="weight-23" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-23" class="visually-hidden">Required for Database Complexity</label><input id="required-23" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F24</td>
+            <td>Data Exchanges (DB)</td>
+            <td class="desc">Data exchanges handled at the database level.</td>
+            <td><label for="weight-24" class="visually-hidden">Weight for Data Exchanges (DB)</label><input id="weight-24" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-24" class="visually-hidden">Required for Data Exchanges (DB)</label><input id="required-24" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F25</td>
+            <td>Script Integration</td>
+            <td class="desc">Integration of scripts with the database.</td>
+            <td><label for="weight-25" class="visually-hidden">Weight for Script Integration</label><input id="weight-25" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-25" class="visually-hidden">Required for Script Integration</label><input id="required-25" type="checkbox" /></td>
+          </tr>
+
+          <!-- Testing Group -->
+          <tr><td colspan="5" class="section-header">Testing</td></tr>
+          <tr>
+            <td>F26</td>
+            <td>Testing Requirements</td>
+            <td class="desc">Overall testing requirements for migration.</td>
+            <td><label for="weight-26" class="visually-hidden">Weight for Testing Requirements</label><input id="weight-26" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-26" class="visually-hidden">Required for Testing Requirements</label><input id="required-26" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F27</td>
+            <td>Automated Testing</td>
+            <td class="desc">Extent of automated test coverage.</td>
+            <td><label for="weight-27" class="visually-hidden">Weight for Automated Testing</label><input id="weight-27" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-27" class="visually-hidden">Required for Automated Testing</label><input id="required-27" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F28</td>
+            <td>Manual Testing</td>
+            <td class="desc">Extent of manual test coverage.</td>
+            <td><label for="weight-28" class="visually-hidden">Weight for Manual Testing</label><input id="weight-28" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-28" class="visually-hidden">Required for Manual Testing</label><input id="required-28" type="checkbox" /></td>
+          </tr>
+
+          <!-- Cutover/Rollback Group -->
+          <tr><td colspan="5" class="section-header">Cutover & Rollback</td></tr>
+          <tr>
+            <td>F29</td>
+            <td>Cutover/Rollback Complexity</td>
+            <td class="desc">Big bang vs phased, rollback, data freeze windows.</td>
+            <td><label for="weight-29" class="visually-hidden">Weight for Cutover/Rollback Complexity</label><input id="weight-29" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-29" class="visually-hidden">Required for Cutover/Rollback Complexity</label><input id="required-29" type="checkbox" /></td>
+          </tr>
+
+          <!-- Automation & Tooling Group -->
+          <tr><td colspan="5" class="section-header">Automation & Tooling</td></tr>
+          <tr>
+            <td>F30</td>
+            <td>Automation & Tooling Readiness</td>
+            <td class="desc">Existing CI/CD, IaC, monitoring, scripts.</td>
+            <td><label for="weight-30" class="visually-hidden">Weight for Automation & Tooling Readiness</label><input id="weight-30" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-30" class="visually-hidden">Required for Automation & Tooling Readiness</label><input id="required-30" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F31</td>
+            <td>Existing Deployment Infrastructure</td>
+            <td class="desc">Deployment infrastructure in place (servers, cloud, etc.).</td>
+            <td><label for="weight-31" class="visually-hidden">Weight for Existing Deployment Infrastructure</label><input id="weight-31" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-31" class="visually-hidden">Required for Existing Deployment Infrastructure</label><input id="required-31" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F32</td>
+            <td>Infrastructure as Code (IaC)</td>
+            <td class="desc">Use of IaC tools (Terraform, ARM, etc.).</td>
+            <td><label for="weight-32" class="visually-hidden">Weight for IaC</label><input id="weight-32" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-32" class="visually-hidden">Required for IaC</label><input id="required-32" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F33</td>
+            <td>Logging</td>
+            <td class="desc">Logging and monitoring readiness.</td>
+            <td><label for="weight-33" class="visually-hidden">Weight for Logging</label><input id="weight-33" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-33" class="visually-hidden">Required for Logging</label><input id="required-33" type="checkbox" /></td>
+          </tr>
+
+          <!-- Licensing Group -->
+          <tr><td colspan="5" class="section-header">Licensing</td></tr>
+          <tr>
+            <td>F34</td>
+            <td>Licensing</td>
+            <td class="desc">Licensing requirements and constraints.</td>
+            <td><label for="weight-34" class="visually-hidden">Weight for Licensing</label><input id="weight-34" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-34" class="visually-hidden">Required for Licensing</label><input id="required-34" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F35</td>
+            <td>Certification Cycles</td>
+            <td class="desc">Frequency and requirements for recertification.</td>
+            <td><label for="weight-35" class="visually-hidden">Weight for Certification Cycles</label><input id="weight-35" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-35" class="visually-hidden">Required for Certification Cycles</label><input id="required-35" type="checkbox" /></td>
+          </tr>
+
+          <!-- Environments Group -->
+          <tr><td colspan="5" class="section-header">Environments</td></tr>
+          <tr>
+            <td>F36</td>
+            <td>Number of Instances</td>
+            <td class="desc">Number of environments (Dev, Test, Stage, Prod, Rel, etc.).</td>
+            <td><label for="weight-36" class="visually-hidden">Weight for Number of Instances</label><input id="weight-36" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-36" class="visually-hidden">Required for Number of Instances</label><input id="required-36" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F37</td>
+            <td>Dev Environment</td>
+            <td class="desc">Development environment requirements.</td>
+            <td><label for="weight-37" class="visually-hidden">Weight for Dev Environment</label><input id="weight-37" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-37" class="visually-hidden">Required for Dev Environment</label><input id="required-37" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F38</td>
+            <td>Test Environment</td>
+            <td class="desc">Testing environment requirements.</td>
+            <td><label for="weight-38" class="visually-hidden">Weight for Test Environment</label><input id="weight-38" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-38" class="visually-hidden">Required for Test Environment</label><input id="required-38" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F39</td>
+            <td>Stage Environment</td>
+            <td class="desc">Staging environment requirements.</td>
+            <td><label for="weight-39" class="visually-hidden">Weight for Stage Environment</label><input id="weight-39" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-39" class="visually-hidden">Required for Stage Environment</label><input id="required-39" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F40</td>
+            <td>Prod Environment</td>
+            <td class="desc">Production environment requirements.</td>
+            <td><label for="weight-40" class="visually-hidden">Weight for Prod Environment</label><input id="weight-40" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-40" class="visually-hidden">Required for Prod Environment</label><input id="required-40" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F41</td>
+            <td>Rel Environment</td>
+            <td class="desc">Release environment requirements.</td>
+            <td><label for="weight-41" class="visually-hidden">Weight for Rel Environment</label><input id="weight-41" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-41" class="visually-hidden">Required for Rel Environment</label><input id="required-41" type="checkbox" /></td>
+          </tr>
+
+          <!-- Application Size & Data Volume Group -->
+          <tr><td colspan="5" class="section-header">Application Size & Data Volume</td></tr>
+          <tr>
+            <td>F42</td>
+            <td>Application Size</td>
+            <td class="desc">Codebase size, modules, custom logic, legacy tech.</td>
+            <td><label for="weight-42" class="visually-hidden">Weight for Application Size</label><input id="weight-42" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-42" class="visually-hidden">Required for Application Size</label><input id="required-42" type="checkbox" /></td>
+          </tr>
+          <tr>
+            <td>F43</td>
+            <td>Data Volume</td>
+            <td class="desc">Total data size to migrate (DB + files).</td>
+            <td><label for="weight-43" class="visually-hidden">Weight for Data Volume</label><input id="weight-43" type="number" min="1" max="10" step="1" value="5" /></td>
+            <td class="centered-cell"><label for="required-43" class="visually-hidden">Required for Data Volume</label><input id="required-43" type="checkbox" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-075 flex-row">
+      <button class="btn" type="button" id="recalcBtn">Recalculate</button>
+      <button class="btn btn-reset" type="button" id="resetBtn">
+        Reset Weights &amp; Model
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. Results -->
+  <div class="card">
+    <h2>3. Results</h2>
+    <div class="results-grid">
+      <div>
+        <div class="result-label">Total Weighted Score</div>
+        <div class="result-value" id="totalScore">0.0</div>
+      </div>
+      <div>
+        <div class="result-label">
+          Size Bucket
+          <span
+            class="tooltip-icon"
+            title="Overall migration size: XS, S, M, L, XL, XXL, or XXXL based on the total weighted score and the thresholds defined above."
+          >ⓘ</span>
+        </div>
+        <div>
+          <span class="pill" id="sizeBucket">–</span>
+        </div>
+      </div>
+      <div>
+        <div class="result-label">Estimated Person-Days</div>
+        <div class="result-value" id="estimatedPersonDays">0.0</div>
+      </div>
+      <div>
+        <div class="result-label">Total Effort Hours</div>
+        <div class="result-value" id="totalHours">0.0</div>
+      </div>
+      <div>
+        <div class="result-label">
+          Person-Sprints Required
+          <span
+            class="tooltip-icon"
+            title="Total person-sprints needed: effort hours divided by sprint hours per person. For example, 180 hours at 60 hours/sprint = 3 person-sprints."
+          >ⓘ</span>
+        </div>
+        <div class="result-value" id="personSprints">0.0</div>
+      </div>
+      <div>
+        <div class="result-label">
+          Sprints with Current Team
+          <span
+            class="tooltip-icon"
+            title="Person-sprints required divided by the number of team members. Example: 6 person-sprints with 3 people = 2 calendar sprints."
+          >ⓘ</span>
+        </div>
+        <div class="result-value" id="calendarSprints">0.0</div>
+      </div>
+      <div>
+        <div class="result-label">Estimated Migration Cost (USD)</div>
+        <div class="result-value" id="estimatedCost">$0</div>
+      </div>
+    </div>
+    <p class="muted mt-075-block">
+      This is a rough planning estimate. Tune the weights and effort model as you gather actual migration data.
+    </p>
+  </div>
+
+  <!-- 4. Service Packages & Team Recommendation -->
+  <div class="card">
+    <h2>4. Service Packages & Team Recommendation</h2>
+    <div id="serviceSummary">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+
+  <!-- 5. Effort & Cost Model (moved to bottom) -->
+  <div class="card">
+    <h2>5. Effort &amp; Cost Model</h2>
+    <div class="grid">
+      <div>
+        <label for="basePersonDays">
+          Base Person-Days per Score Point
+          <span
+            class="tooltip-icon"
+            title="How many person-days of effort you expect for each 1 point of total weighted score. Higher = more effort per unit of complexity. Tune this using historical migration data."
+          >ⓘ</span>
+        </label>
+        <!-- you can set this to 0.3 or 0.6 as you prefer -->
+        <input id="basePersonDays" type="number" step="0.1" value="0.3" />
+        <p class="muted">Person-days per 1 point of weighted score.</p>
+      </div>
+      <div>
+        <label for="dailyRate">
+          Daily Rate (USD)
+          <span
+            class="tooltip-icon"
+            title="Blended cost of one person-day of work (e.g., ~8 hours) including salary, benefits, and overhead. Used to convert effort into estimated migration cost."
+          >ⓘ</span>
+        </label>
+        <input id="dailyRate" type="number" step="50" value="200" />
+        <p class="muted">Blended cost per person-day.</p>
+      </div>
+      <div>
+        <label for="workDaysPerMonth">
+          Work Days per Month
+          <span
+            class="tooltip-icon"
+            title="How many working days you assume in a typical month. Used only for internal calibration and sanity checks."
+          >ⓘ</span>
+        </label>
+        <input id="workDaysPerMonth" type="number" step="1" value="20" />
+        <p class="muted">Reference value for planning.</p>
+      </div>
+      <div>
+        <label for="hoursPerDay">
+          Hours per Work Day
+          <span
+            class="tooltip-icon"
+            title="How many hours count as one full workday for planning (e.g., 6 or 8). Used to convert person-days into total hours and sprint-hours."
+          >ⓘ</span>
+        </label>
+        <input id="hoursPerDay" type="number" step="0.5" value="6" />
+        <p class="muted">Used to convert person-days to hours.</p>
+      </div>
+      <div>
+        <label for="sprintHours">
+          Sprint Hours per Person
+          <span
+            class="tooltip-icon"
+            title="Number of hours a single person is expected to contribute in one sprint. In your case, 60 hours per sprint per person."
+          >ⓘ</span>
+        </label>
+        <input id="sprintHours" type="number" step="1" value="60" />
+        <p class="muted">Hours of one person’s work in a sprint.</p>
+      </div>
+      <div>
+        <label for="teamMembers">
+          Team Members Available
+          <span
+            class="tooltip-icon"
+            title="How many people will actually be working on this migration. Used to convert person-sprints into calendar sprints."
+          >ⓘ</span>
+        </label>
+        <input id="teamMembers" type="number" step="1" value="3" />
+        <p class="muted">People assigned to this migration.</p>
+      </div>
+
+      <!-- XS–XXXL thresholds -->
+      <div>
+        <label for="xsThreshold">
+          XS Threshold
+          <span
+            class="tooltip-icon"
+            title="If the total weighted score is below this value, the app is classified as Extra Small (XS)."
+          >ⓘ</span>
+        </label>
+        <input id="xsThreshold" type="number" step="1" value="75" />
+        <p class="muted">Score &lt; XS = XS.</p>
+      </div>
+      <div>
+        <label for="sThreshold">
+          S Threshold
+          <span
+            class="tooltip-icon"
+            title="If the score is greater than or equal to the XS threshold but below this value, the app is Small (S)."
+          >ⓘ</span>
+        </label>
+        <input id="sThreshold" type="number" step="1" value="116" />
+        <p class="muted">XS ≤ Score &lt; S = S.</p>
+      </div>
+      <div>
+        <label for="mThreshold">
+          M Threshold
+          <span
+            class="tooltip-icon"
+            title="If the score is greater than or equal to the S threshold but below this value, the app is Medium (M)."
+          >ⓘ</span>
+        </label>
+        <input id="mThreshold" type="number" step="1" value="231" />
+        <p class="muted">S ≤ Score &lt; M = M.</p>
+      </div>
+      <div>
+        <label for="lThreshold">
+          L Threshold
+          <span
+            class="tooltip-icon"
+            title="If the score is greater than or equal to the M threshold but below this value, the app is Large (L)."
+          >ⓘ</span>
+        </label>
+        <input id="lThreshold" type="number" step="1" value="346" />
+        <p class="muted">M ≤ Score &lt; L = L.</p>
+      </div>
+      <div>
+        <label for="xlThreshold">
+          XL Threshold
+          <span
+            class="tooltip-icon"
+            title="If the score is greater than or equal to the L threshold but below this value, the app is Extra Large (XL)."
+          >ⓘ</span>
+        </label>
+        <input id="xlThreshold" type="number" step="1" value="461" />
+        <p class="muted">L ≤ Score &lt; XL = XL.</p>
+      </div>
+      <div>
+        <label for="xxlThreshold">
+          XXL Threshold
+          <span
+            class="tooltip-icon"
+            title="If the score is greater than or equal to the XL threshold but below this value, the app is XXL. Anything above this is XXXL (massive migration)."
+          >ⓘ</span>
+        </label>
+        <input id="xxlThreshold" type="number" step="1" value="576" />
+        <p class="muted">XL ≤ Score &lt; XXL = XXL, else XXXL.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Service Packages & Team Recommendation (was 4) -->
+  <div class="card">
+    <h2>6. Service Packages & Team Recommendation</h2>
+    <div id="serviceSummary">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- Export/Import Logic ---
+  function exportProgress() {
+    const data = {};
+    // Export all weights and required checkboxes
+    for (let i = 1; i <= factorCount; i++) {
+      data['weight-' + i] = document.getElementById('weight-' + i)?.value;
+      data['required-' + i] = document.getElementById('required-' + i)?.checked;
+    }
+    // Export other key fields (add more as needed)
+    [
+      'basePersonDays', 'dailyRate', 'workDaysPerMonth', 'hoursPerDay',
+      'xsThreshold', 'sThreshold', 'mThreshold', 'lThreshold', 'xlThreshold',
+      'appName', 'vendor', 'purpose', 'location', 'totalUsers', 'migrationType',
+      'notes'
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) data[id] = el.value;
+    });
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    // Use appName if available, else fallback
+    let appName = (data['appName'] || '').trim();
+    if (!appName) appName = 'migration-tool';
+    // Sanitize appName for filename
+    appName = appName.replace(/[^a-z0-9\-_]+/gi, '_');
+    a.download = appName + '-size-estimate.json';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 100);
+  }
+
+  function importProgressFromFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        for (let i = 1; i <= factorCount; i++) {
+          const w = document.getElementById('weight-' + i);
+          if (w && data['weight-' + i] !== undefined) w.value = data['weight-' + i];
+          const r = document.getElementById('required-' + i);
+          if (r && data['required-' + i] !== undefined) r.checked = data['required-' + i];
+        }
+        [
+          'basePersonDays', 'dailyRate', 'workDaysPerMonth', 'hoursPerDay',
+          'xsThreshold', 'sThreshold', 'mThreshold', 'lThreshold', 'xlThreshold',
+          'appName', 'vendor', 'purpose', 'location', 'totalUsers', 'migrationType',
+          'notes'
+        ].forEach(id => {
+          const el = document.getElementById(id);
+          if (el && data[id] !== undefined) el.value = data[id];
+        });
+        calculate();
+        alert('Progress imported successfully!');
+      } catch (err) {
+        alert('Failed to import: ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('exportBtn').addEventListener('click', exportProgress);
+    document.getElementById('importBtn').addEventListener('click', function() {
+      document.getElementById('importInput').click();
+    });
+    document.getElementById('importInput').addEventListener('change', function(e) {
+      if (e.target.files && e.target.files[0]) {
+        importProgressFromFile(e.target.files[0]);
+      }
+    });
+  });
+const factorCount = 43;
+(function() {
+  const defaultWeights = Array(factorCount).fill(5); // default weight 5 for each factor F1–F43
+  const defaultRatings = Array(factorCount).fill(5); // default rating 5 for each factor F1–F43
+  const defaultModel = {
+    basePersonDays: 10,
+    dailyRate: 200,
+    workDaysPerMonth: 20,
+    hoursPerDay: 6,
+    sprintHours: 60,
+    teamMembers: 6,
+    xsThreshold: 75,
+    sThreshold: 116,
+    mThreshold: 231,
+    lThreshold: 376,
+    xlThreshold: 461,
+    xxlThreshold: 576
+  };
+
+  function getNumber(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    const v = parseFloat(el.value);
+    return isNaN(v) ? 0 : v;
+  }
+
+  function setBadgeClass(bucket) {
+    const el = document.getElementById('sizeBucket');
+    el.className = 'pill';
+    if (bucket === 'XS') el.classList.add('badge-xs');
+    else if (bucket === 'S') el.classList.add('badge-s');
+    else if (bucket === 'M') el.classList.add('badge-m');
+    else if (bucket === 'L') el.classList.add('badge-l');
+    else if (bucket === 'XL') el.classList.add('badge-xl');
+    else if (bucket === 'XXL') el.classList.add('badge-xxl');
+    else if (bucket === 'XXXL') el.classList.add('badge-xxxl');
+  }
+
+  function calculate() {
+    let totalScore = 0;
+    for (let i = 1; i <= factorCount; i++) {
+      const weight = getNumber('weight-' + i);
+      const required = document.getElementById('required-' + i).checked;
+      if (required) {
+        totalScore += weight;
+      }
+    }
+
+    document.getElementById('totalScore').textContent = totalScore.toFixed(1);
+
+    const xsThreshold  = getNumber('xsThreshold');
+    const sThreshold   = getNumber('sThreshold');
+    const mThreshold   = getNumber('mThreshold');
+    const lThreshold   = getNumber('lThreshold');
+    const xlThreshold  = getNumber('xlThreshold');
+    const xxlThreshold = getNumber('xxlThreshold');
+
+    // --- Move all logic below INSIDE the function ---
+    let bucket = '–';
+    if (totalScore > 0) {
+      if (totalScore < xsThreshold) bucket = 'XS';
+      else if (totalScore < sThreshold) bucket = 'S';
+      else if (totalScore < mThreshold) bucket = 'M';
+      else if (totalScore < lThreshold) bucket = 'L';
+      else if (totalScore < xlThreshold) bucket = 'XL';
+      else if (totalScore < xxlThreshold) bucket = 'XXL';
+      else bucket = 'XXXL';
+    }
+    document.getElementById('sizeBucket').textContent = bucket;
+    setBadgeClass(bucket);
+
+    const basePersonDays = getNumber('basePersonDays');
+    const dailyRate      = getNumber('dailyRate');
+    const hoursPerDay    = getNumber('hoursPerDay');
+    const sprintHours    = getNumber('sprintHours');
+    const teamMembers    = getNumber('teamMembers');
+
+    const personDays = totalScore * basePersonDays;
+    const totalHours = personDays * hoursPerDay;
+    const cost       = personDays * dailyRate;
+
+    let personSprints = 0;
+    if (sprintHours > 0) {
+      personSprints = totalHours / sprintHours;
+    }
+
+    let calendarSprints = 0;
+    if (teamMembers > 0) {
+      calendarSprints = personSprints / teamMembers;
+    }
+
+    document.getElementById('estimatedPersonDays').textContent = personDays.toFixed(1);
+    document.getElementById('totalHours').textContent          = totalHours.toFixed(1);
+    document.getElementById('personSprints').textContent       = personSprints.toFixed(2);
+    document.getElementById('calendarSprints').textContent     = calendarSprints.toFixed(2);
+    document.getElementById('estimatedCost').textContent =
+      isNaN(cost) ? '$0' : '$' + Math.round(cost).toLocaleString();
+
+    // --- Fusion Team Recommendation & Service Packages ---
+    const serviceSummary = document.getElementById('serviceSummary');
+    let effortText = `<strong>Total Effort:</strong> <span>${personDays.toFixed(1)} person-days, ${totalHours.toFixed(1)} hours, ${personSprints.toFixed(2)} person-sprints, ${calendarSprints.toFixed(2)} sprints with your team</span>`;
+    let costText = `<strong>Estimated Cost:</strong> <span>${isNaN(cost) ? '$0' : '$' + Math.round(cost).toLocaleString()}</span>`;
+
+    // Delivery speed factor
+    const deliverySpeed = document.getElementById('deliverySpeed').value;
+    let speedLabel = '';
+    let speedDesc = '';
+    let speedImpact = 1;
+    if (deliverySpeed === 'base') {
+      speedLabel = 'Base Development Speed';
+      speedDesc = 'Standard delivery timeline. Balanced cost and quality.';
+      speedImpact = 1;
+    } else if (deliverySpeed === 'medium') {
+      speedLabel = 'Medium Development Speed';
+      speedDesc = 'Accelerated delivery. May require additional resources or overtime.';
+      speedImpact = 1.25;
+    } else if (deliverySpeed === 'moq') {
+      speedLabel = 'MOQ Development Speed';
+      speedDesc = 'Maximum output speed. Highest resource allocation, premium cost.';
+      speedImpact = 1.5;
+    }
+
+    // Adjust cost and effort for speed
+    let speedCost = cost * speedImpact;
+    let speedEffort = personDays * speedImpact;
+    let speedHours = totalHours * speedImpact;
+    let speedPersonSprints = personSprints * speedImpact;
+    let speedCalendarSprints = calendarSprints * speedImpact;
+
+    // Fusion team options (speed impacts team suggestion)
+    const fusionTeams = [
+      {
+        name: 'Product Launch Team',
+        desc: 'Product Owner, UX/UI Designer, Developer (pro & citizen/low-code), Marketer, QA Tester. For new product launches, combining design, build, marketing, and quality.'
+      },
+      {
+        name: 'New Feature Development Team',
+        desc: 'Product Manager, Business Analyst, UX/UI Designer, Developer(s). For developing new features, combining vision, requirements, design, and build.'
+      },
+      {
+        name: 'Digital Operations Team',
+        desc: 'IT Operations/Admin, Business Analyst, Data Analyst, Change Management Specialist. For optimizing digital operations and user adoption.'
+      }
+    ];
+
+    let migrationType = document.getElementById('migrationType').value || '';
+    let recommendedTeam = fusionTeams[0]; // Default: Product Launch Team
+    if (deliverySpeed === 'moq') {
+      // MOQ speed always recommends Product Launch Team for max output
+      recommendedTeam = fusionTeams[0];
+    } else if (deliverySpeed === 'medium') {
+      // Medium speed prefers New Feature Development Team
+      recommendedTeam = fusionTeams[1];
+    } else {
+      // Base speed uses migration type logic
+      if (migrationType.includes('Lift')) recommendedTeam = fusionTeams[2]; // Digital Operations Team
+      else if (migrationType.includes('Refactor')) recommendedTeam = fusionTeams[1]; // New Feature Development Team
+      else if (migrationType.includes('Replace')) recommendedTeam = fusionTeams[0]; // Product Launch Team
+    }
+
+    let teamText = `<strong>Recommended Fusion Team:</strong> <span class="fw-600">${recommendedTeam.name}</span><br /><span class="muted">${recommendedTeam.desc}</span>`;
+    let speedText = `<strong>Delivery Speed:</strong> <span class="fw-600">${speedLabel}</span><br /><span class="muted">${speedDesc}</span>`;
+
+    // Service packages by bucket and migration type, with speed impact
+    let packages = [];
+    migrationType = migrationType.toLowerCase();
+    if (migrationType.includes('lift')) {
+      if (bucket === 'XS' || bucket === 'S') {
+        packages.push({
+          name: 'Basic Migration',
+          desc: 'For small apps with minimal complexity. Includes planning, migration, and basic testing.',
+          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+        });
+        packages.push({
+          name: 'Standard Migration',
+          desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
+          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+        });
+      } else {
+        packages.push({
+          name: 'Standard Migration',
+          desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
+          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+        });
+      }
+    } else if (migrationType.includes('replatform') || migrationType.includes('refactor')) {
+      packages.push({
+        name: 'Standard Migration',
+        desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
+        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+      });
+      packages.push({
+        name: 'Premium Migration',
+        desc: 'For complex or mission-critical apps. Includes full planning, migration, advanced testing, refactoring, and post-migration support.',
+        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+      });
+    } else if (migrationType.includes('replace')) {
+      packages.push({
+        name: 'Premium Migration',
+        desc: 'For complex or mission-critical apps. Includes full planning, migration, advanced testing, refactoring, and post-migration support.',
+        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+      });
+    } else if (migrationType.includes('retire')) {
+      packages.push({
+        name: 'Retirement Package',
+        desc: 'For apps being decommissioned. Includes planning, data archiving, and system shutdown.',
+        price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+      });
+    } else {
+      if (bucket === 'XS' || bucket === 'S') {
+        packages.push({
+          name: 'Basic Migration',
+          desc: 'For small apps with minimal complexity. Includes planning, migration, and basic testing.',
+          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+        });
+      } else if (bucket === 'M' || bucket === 'L') {
+        packages.push({
+          name: 'Standard Migration',
+          desc: 'For medium/large apps. Includes planning, migration, testing, and limited refactoring.',
+          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+        });
+      } else if (bucket === 'XL' || bucket === 'XXL' || bucket === 'XXXL') {
+        packages.push({
+          name: 'Premium Migration',
+          desc: 'For complex or mission-critical apps. Includes full planning, migration, advanced testing, refactoring, and post-migration support.',
+          price: `<strong>Speed-adjusted Cost:</strong> <span>${isNaN(speedCost) ? '$0' : '$' + Math.round(speedCost).toLocaleString()}</span>`
+        });
+      }
+    }
+
+    let pkgHtml = '<strong>Service Packages:</strong>';
+    if (packages.length > 0) {
+      pkgHtml += '<ul class="mt-half-rem">';
+      packages.forEach(pkg => {
+        pkgHtml += `<li><span class="fw-600">${pkg.name}</span>: ${pkg.desc} <br />${pkg.price}</li>`;
+      });
+      pkgHtml += '</ul>';
+    } else {
+      pkgHtml += '<div class="muted">No package available for the current selection.</div>';
+    }
+
+
+    serviceSummary.innerHTML = `<div class="mb-half-rem">${teamText}</div><div class="mb-half-rem">${speedText}</div><div class="mb-half-rem">${effortText}</div><div class="mb-half-rem">${pkgHtml}</div>`;
+  }
+
+  function hookInputs() {
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(el => {
+      el.addEventListener('change', calculate);
+      el.addEventListener('keyup', calculate);
+    });
+  }
+
+
+  function resetDefaults() {
+    for (let i = 1; i <= factorCount; i++) {
+      const w = document.getElementById('weight-' + i);
+      if (w) w.value = defaultWeights[i - 1];
+      const r = document.getElementById('rating-' + i);
+      if (r) r.value = defaultRatings[i - 1];
+    }
+    document.getElementById('basePersonDays').value   = defaultModel.basePersonDays;
+    document.getElementById('dailyRate').value        = defaultModel.dailyRate;
+    document.getElementById('workDaysPerMonth').value = defaultModel.workDaysPerMonth;
+    document.getElementById('hoursPerDay').value      = defaultModel.hoursPerDay;
+    document.getElementById('sprintHours').value      = defaultModel.sprintHours;
+    document.getElementById('teamMembers').value      = defaultModel.teamMembers;
+    document.getElementById('xsThreshold').value      = defaultModel.xsThreshold;
+    document.getElementById('sThreshold').value       = defaultModel.sThreshold;
+    document.getElementById('mThreshold').value       = defaultModel.mThreshold;
+    document.getElementById('lThreshold').value       = defaultModel.lThreshold;
+    document.getElementById('xlThreshold').value      = defaultModel.xlThreshold;
+    document.getElementById('xxlThreshold').value     = defaultModel.xxlThreshold;
+    document.getElementById('missionCriticality').value = '3';
+    document.getElementById('migrationType').value = 'New system, Replace';
+    document.getElementById('deliverySpeed').value = 'moq';
+    calculate();
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    hookInputs();
+    document.getElementById('recalcBtn').addEventListener('click', calculate);
+    document.getElementById('resetBtn').addEventListener('click', resetDefaults);
+    resetDefaults();
+  });
+
+  // Expose calculate globally
+  window.calculate = calculate;
+})();
+</script>
+</body>
+</html>
