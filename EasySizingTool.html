@@ -167,22 +167,36 @@
   <!-- 3. Results -->
   <div class="card">
     <h2>3. Results</h2>
-    <div class="results-grid">
+    <div class="results-grid results-buckets">
+      <div class="result-square">
+        <div class="result-label">Standard Size Bucket</div>
+        <div><span class="pill" id="sizeBucketStandard">–</span></div>
+        <div class="result-label">Man-Hours</div>
+        <div class="result-value" id="manHoursStandard">0.0</div>
+        <div class="result-label">Estimated Cost</div>
+        <div class="result-value" id="costStandard">$0</div>
+      </div>
+      <div class="result-square">
+        <div class="result-label">Recommended Size Bucket</div>
+        <div><span class="pill" id="sizeBucketRecommended">–</span></div>
+        <div class="result-label">Man-Hours</div>
+        <div class="result-value" id="manHoursRecommended">0.0</div>
+        <div class="result-label">Estimated Cost</div>
+        <div class="result-value" id="costRecommended">$0</div>
+      </div>
+      <div class="result-square">
+        <div class="result-label">Express Size Bucket</div>
+        <div><span class="pill" id="sizeBucketExpress">–</span></div>
+        <div class="result-label">Man-Hours</div>
+        <div class="result-value" id="manHoursExpress">0.0</div>
+        <div class="result-label">Estimated Cost</div>
+        <div class="result-value" id="costExpress">$0</div>
+      </div>
+    </div>
+    <div class="results-details">
       <div>
         <div class="result-label">Total Weighted Score</div>
         <div class="result-value" id="totalScore">0.0</div>
-      </div>
-      <div>
-        <div class="result-label">
-          Size Bucket
-          <span
-            class="tooltip-icon"
-            title="Overall migration size: XS, S, M, L, XL, XXL, or XXXL based on the total weighted score and the thresholds defined above."
-          >ⓘ</span>
-        </div>
-        <div>
-          <span class="pill" id="sizeBucket">–</span>
-        </div>
       </div>
       <div>
         <div class="result-label">Estimated Person-Days</div>
@@ -193,23 +207,11 @@
         <div class="result-value" id="totalHours">0.0</div>
       </div>
       <div>
-        <div class="result-label">
-          Person-Sprints Required
-          <span
-            class="tooltip-icon"
-            title="Total person-sprints needed: effort hours divided by sprint hours per person. For example, 180 hours at 60 hours/sprint = 3 person-sprints."
-          >ⓘ</span>
-        </div>
+        <div class="result-label">Person-Sprints Required</div>
         <div class="result-value" id="personSprints">0.0</div>
       </div>
       <div>
-        <div class="result-label">
-          Sprints with Current Team
-          <span
-            class="tooltip-icon"
-            title="Person-sprints required divided by the number of team members. Example: 6 person-sprints with 3 people = 2 calendar sprints."
-          >ⓘ</span>
-        </div>
+        <div class="result-label">Sprints with Current Team</div>
         <div class="result-value" id="calendarSprints">0.0</div>
       </div>
       <div>
@@ -507,26 +509,67 @@ const factorCount = 43;
     const xlThreshold  = getNumber('xlThreshold');
     const xxlThreshold = getNumber('xxlThreshold');
 
-    // --- Move all logic below INSIDE the function ---
-    let bucket = '–';
-    if (totalScore > 0) {
-      if (totalScore < xsThreshold) bucket = 'XS';
-      else if (totalScore < sThreshold) bucket = 'S';
-      else if (totalScore < mThreshold) bucket = 'M';
-      else if (totalScore < lThreshold) bucket = 'L';
-      else if (totalScore < xlThreshold) bucket = 'XL';
-      else if (totalScore < xxlThreshold) bucket = 'XXL';
-      else bucket = 'XXXL';
-    }
-    document.getElementById('sizeBucket').textContent = bucket;
-    setBadgeClass(bucket);
+    // Standard, Recommended, Express multipliers
+    const multipliers = {
+      standard: 1,
+      recommended: 1.25,
+      express: 1.5
+    };
 
+    // Calculate buckets for each mode
+    function getBucket(score) {
+      if (score < xsThreshold) return 'XS';
+      else if (score < sThreshold) return 'S';
+      else if (score < mThreshold) return 'M';
+      else if (score < lThreshold) return 'L';
+      else if (score < xlThreshold) return 'XL';
+      else if (score < xxlThreshold) return 'XXL';
+      else return 'XXXL';
+    }
+
+    // Calculate for each mode
     const basePersonDays = getNumber('basePersonDays');
     const dailyRate      = getNumber('dailyRate');
     const hoursPerDay    = getNumber('hoursPerDay');
     const sprintHours    = getNumber('sprintHours');
     const teamMembers    = getNumber('teamMembers');
 
+    // Standard
+    const personDaysStandard = totalScore * basePersonDays * multipliers.standard;
+    const totalHoursStandard = personDaysStandard * hoursPerDay;
+    const costStandard = personDaysStandard * dailyRate;
+    const bucketStandard = getBucket(totalScore);
+    document.getElementById('sizeBucketStandard').textContent = bucketStandard;
+    document.getElementById('manHoursStandard').textContent = totalHoursStandard.toFixed(1);
+    document.getElementById('costStandard').textContent = isNaN(costStandard) ? '$0' : '$' + Math.round(costStandard).toLocaleString();
+    setBadgeClassCustom('sizeBucketStandard', bucketStandard);
+
+    // Recommended
+    const personDaysRecommended = totalScore * basePersonDays * multipliers.recommended;
+    const totalHoursRecommended = personDaysRecommended * hoursPerDay;
+    const costRecommended = personDaysRecommended * dailyRate;
+    const bucketRecommended = getBucket(totalScore * multipliers.recommended);
+    document.getElementById('sizeBucketRecommended').textContent = bucketRecommended;
+    document.getElementById('manHoursRecommended').textContent = totalHoursRecommended.toFixed(1);
+    document.getElementById('costRecommended').textContent = isNaN(costRecommended) ? '$0' : '$' + Math.round(costRecommended).toLocaleString();
+    setBadgeClassCustom('sizeBucketRecommended', bucketRecommended);
+
+    // Express
+    const personDaysExpress = totalScore * basePersonDays * multipliers.express;
+    const totalHoursExpress = personDaysExpress * hoursPerDay;
+    const costExpress = personDaysExpress * dailyRate;
+    const bucketExpress = getBucket(totalScore * multipliers.express);
+    document.getElementById('sizeBucketExpress').textContent = bucketExpress;
+    document.getElementById('manHoursExpress').textContent = totalHoursExpress.toFixed(1);
+    document.getElementById('costExpress').textContent = isNaN(costExpress) ? '$0' : '$' + Math.round(costExpress).toLocaleString();
+    setBadgeClassCustom('sizeBucketExpress', bucketExpress);
+
+    // Original single bucket for legacy display
+    let bucket = getBucket(totalScore);
+    document.getElementById('sizeBucket').textContent = bucket;
+    setBadgeClass(bucket);
+
+    // Original details
     const personDays = totalScore * basePersonDays;
     const totalHours = personDays * hoursPerDay;
     const cost       = personDays * dailyRate;
@@ -547,6 +590,19 @@ const factorCount = 43;
     document.getElementById('calendarSprints').textContent     = calendarSprints.toFixed(2);
     document.getElementById('estimatedCost').textContent =
       isNaN(cost) ? '$0' : '$' + Math.round(cost).toLocaleString();
+
+    // Helper for badge class for new squares
+    function setBadgeClassCustom(id, bucket) {
+      const el = document.getElementById(id);
+      el.className = 'pill';
+      if (bucket === 'XS') el.classList.add('badge-xs');
+      else if (bucket === 'S') el.classList.add('badge-s');
+      else if (bucket === 'M') el.classList.add('badge-m');
+      else if (bucket === 'L') el.classList.add('badge-l');
+      else if (bucket === 'XL') el.classList.add('badge-xl');
+      else if (bucket === 'XXL') el.classList.add('badge-xxl');
+      else if (bucket === 'XXXL') el.classList.add('badge-xxxl');
+    }
 
     // --- Fusion Team Recommendation & Service Packages ---
     const serviceSummary = document.getElementById('serviceSummary');
