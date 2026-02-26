@@ -9,7 +9,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Easy Application Sizing Tool</h1>
+    <h1>Enhanced Application Sizing Tool</h1>
     <div class="export-import-controls">
       <button id="exportBtn" type="button">Export Progress</button>
       <label for="importInput" class="visually-hidden">Import Progress File</label>
@@ -58,13 +58,11 @@
         </fieldset>
         <div class="security-right">
           <div>
-            <label for="impactLevelRequired">Impact Level Required (target state)</label>
+            <label for="impactLevelRequired">Mission Criticality</label>
             <select id="impactLevelRequired">
-              <option value="1">IL2</option>
-              <option value="2">IL4</option>
-              <option value="3">IL5</option>
-              <option value="4">IL6</option>
-              <option value="2">Other</option>
+              <option value="3">Mission Support</option>
+              <option value="6">Mission Essential</option>
+              <option value="9">Mission Critical</option>
             </select>
           </div>
           <div><label for="secCap">CAP</label><select id="secCap"><option value="0">N/A</option><option value="3">Yes</option><option value="0">No</option></select></div>
@@ -144,9 +142,9 @@
       <h2>6. Service Packages</h2>
       <p class="desc">Same scope score, different staffing caps and pricing multipliers.</p>
       <div class="pricing-grid" role="list" aria-label="Service packages">
-        <section class="pricing-card" role="listitem" aria-labelledby="pkg-standard-title"><header class="pricing-header"><h3 id="pkg-standard-title">Standard</h3><div class="pricing-sub">Up to <strong>3</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-standard-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-standard-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-standard-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-standard-hours">0</dd></div><div class="pricing-kv-row"><dt>Person-sprints</dt><dd id="pkg-standard-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-standard-sprintCapacityHours">0</dd></div></dl></section>
-        <section class="pricing-card pricing-featured" role="listitem" aria-labelledby="pkg-recommended-title"><header class="pricing-header"><div class="pricing-badge" aria-hidden="true">Recommended</div><h3 id="pkg-recommended-title">Recommended</h3><div class="pricing-sub">Up to <strong>6</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-recommended-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-recommended-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-recommended-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-recommended-hours">0</dd></div><div class="pricing-kv-row"><dt>Person-sprints</dt><dd id="pkg-recommended-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-recommended-sprintCapacityHours">0</dd></div></dl></section>
-        <section class="pricing-card" role="listitem" aria-labelledby="pkg-express-title"><header class="pricing-header"><h3 id="pkg-express-title">Expedited</h3><div class="pricing-sub">Up to <strong>9</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-express-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-express-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-express-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-express-hours">0</dd></div><div class="pricing-kv-row"><dt>Person-sprints</dt><dd id="pkg-express-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-express-sprintCapacityHours">0</dd></div></dl></section>
+        <section class="pricing-card" role="listitem" aria-labelledby="pkg-standard-title"><header class="pricing-header"><h3 id="pkg-standard-title">Standard</h3><div class="pricing-sub">Up to <strong>3</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-standard-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-standard-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-standard-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-standard-hours">0</dd></div><div class="pricing-kv-row"><dt>Team sprints</dt><dd id="pkg-standard-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-standard-sprintCapacityHours">0</dd></div></dl></section>
+        <section class="pricing-card pricing-featured" role="listitem" aria-labelledby="pkg-recommended-title"><header class="pricing-header"><div class="pricing-badge" aria-hidden="true">Recommended</div><h3 id="pkg-recommended-title">Recommended</h3><div class="pricing-sub">Up to <strong>6</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-recommended-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-recommended-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-recommended-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-recommended-hours">0</dd></div><div class="pricing-kv-row"><dt>Team sprints</dt><dd id="pkg-recommended-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-recommended-sprintCapacityHours">0</dd></div></dl></section>
+        <section class="pricing-card" role="listitem" aria-labelledby="pkg-express-title"><header class="pricing-header"><h3 id="pkg-express-title">Expedited</h3><div class="pricing-sub">Up to <strong>9</strong> people</div></header><div class="pricing-price"><div class="pricing-price-label">Estimated Cost</div><div class="pricing-price-value"><span class="pricing-currency">$</span><span id="pkg-express-cost">0</span></div></div><dl class="pricing-kv"><div class="pricing-kv-row"><dt>Daily rate</dt><dd id="pkg-express-rate">$0</dd></div><div class="pricing-kv-row"><dt>Person-days</dt><dd id="pkg-express-days">0</dd></div><div class="pricing-kv-row"><dt>Total hours</dt><dd id="pkg-express-hours">0</dd></div><div class="pricing-kv-row"><dt>Team sprints</dt><dd id="pkg-express-personSprints">0</dd></div><div class="pricing-kv-row"><dt>Sprint capacity (hours)</dt><dd id="pkg-express-sprintCapacityHours">0</dd></div></dl></section>
       </div>
     </div>
 
@@ -299,12 +297,13 @@
         const rate = dailyRate * pkg.rateMultiplier;
         const cost = personDays * rate;
         const sprintCapacityHours = sprintHours * pkg.teamCap;
+        const teamSprints = sprintCapacityHours > 0 ? totalHours / sprintCapacityHours : 0;
         const prefix = 'pkg-' + pkg.key;
         document.getElementById(prefix + '-cost').textContent = Math.round(cost).toLocaleString();
         document.getElementById(prefix + '-rate').textContent = formatMoney(rate);
         document.getElementById(prefix + '-days').textContent = personDays.toFixed(1);
         document.getElementById(prefix + '-hours').textContent = totalHours.toFixed(1);
-        document.getElementById(prefix + '-personSprints').textContent = personSprints.toFixed(2);
+        document.getElementById(prefix + '-personSprints').textContent = teamSprints.toFixed(2);
         document.getElementById(prefix + '-sprintCapacityHours').textContent = sprintCapacityHours.toFixed(0);
       });
     }
@@ -342,10 +341,15 @@
       calculate();
     }
 
+    const PERSIST_SELECTOR = 'input:not([type="file"]), select, textarea';
+
+    function getPersistableElements() {
+      return Array.from(document.querySelectorAll(PERSIST_SELECTOR)).filter((el) => Boolean(el.id));
+    }
+
     function exportProgress() {
       const data = {};
-      document.querySelectorAll('input, select, textarea').forEach((el) => {
-        if (!el.id) return;
+      getPersistableElements().forEach((el) => {
         data[el.id] = el.type === 'checkbox' ? el.checked : el.value;
       });
       let appName = (data.appName || '').trim();
@@ -372,8 +376,15 @@
           Object.entries(data).forEach(([id, value]) => {
             const element = document.getElementById(id);
             if (!element) return;
-            if (element.type === 'checkbox') element.checked = Boolean(value);
-            else element.value = String(value ?? '');
+            if (element.type === 'checkbox') {
+              element.checked = Boolean(value);
+              return;
+            }
+            if (element.type === 'radio') {
+              element.checked = String(element.value) === String(value);
+              return;
+            }
+            element.value = String(value ?? '');
           });
           calculate();
           alert('Progress imported successfully!');
@@ -385,7 +396,7 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('input, select, textarea').forEach((el) => {
+      getPersistableElements().forEach((el) => {
         el.addEventListener('change', calculate);
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.addEventListener('keyup', calculate);
       });
